@@ -1,15 +1,13 @@
 import os.path
-from llama_index.core.ingestion import IngestionPipeline,IngestionCache
+from llama_index.core.ingestion import IngestionPipeline
 from llama_index.core.node_parser import SentenceSplitter
-from llama_index.core import Document,StorageContext,load_index_from_storage
-from llama_index.vector_stores.qdrant import QdrantVectorStore
-import qdrant_client
+from llama_index.core import Document
 from config import params
-from components import local_models
+from modules.ai_modules.retrieval_modules import local_models
 
 # Define variables
 embedding_cache_folder = os.path.join(params.cache_folder,"embedding_cache")
-storing_cache_folder = os.path.join("./",params.cache_folder,"storing_cache")
+storing_cache_folder = os.path.join("../../../components/ingestion_pipeline/", params.cache_folder, "storing_cache")
 
 # Define transformation
 local_transformations = [

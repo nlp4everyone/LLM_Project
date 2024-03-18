@@ -1,8 +1,9 @@
 from llama_index.core import VectorStoreIndex,get_response_synthesizer
-from llama_index.core.retrievers import VectorIndexRetriever,BaseRetriever,RecursiveRetriever
+from llama_index.core.retrievers import VectorIndexRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.postprocessor import SimilarityPostprocessor
-from components import local_models
+from modules.ai_modules.retrieval_modules import local_models
+
 
 class BaseRetrieval():
     def __init__(self,nodes=None,similarity_top_k=3):
@@ -11,7 +12,7 @@ class BaseRetrieval():
         # Nodes
         self.nodes = nodes
         # Index
-        self.index = VectorStoreIndex(self.nodes,embed_model=local_models.local_embedding)
+        self.index = VectorStoreIndex(self.nodes, embed_model=local_models.local_embedding)
         # Params
         self.similarity_top_k = similarity_top_k
         # Retrieval

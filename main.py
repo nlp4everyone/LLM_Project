@@ -1,7 +1,7 @@
-from components.ingestion_pipeline.local_pipeline import LocalIngestion
+from modules.ai_modules.retrieval_modules.ingestion_pipeline import LocalIngestion
 from components.loader.web_loader import WebLoader
-from components.retrieval.custom_retrieval import BaseRetrieval,CustomRetrieval
-import time
+from components.retrieval.custom_retrieval import BaseRetrieval
+
 urls = ["https://en.wikipedia.org/wiki/Data_science"]
 
 # Define documents
