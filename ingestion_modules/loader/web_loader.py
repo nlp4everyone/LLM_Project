@@ -16,11 +16,11 @@ class WebLoader():
         if not isinstance(web_urls,list):
             raise Exception("Web urls must be a list of website")
         # Try catch
-        try:
-            return WebLoader._loader.load_data(web_urls)
-        except Exception as e:
-            print(e)
-            return None
+        # try:
+        return WebLoader._loader.load_data(web_urls)
+        # except Exception as e:
+        #     raise Exception(e)
+        #     return None
 
 class Utils():
     @staticmethod

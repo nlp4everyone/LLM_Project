@@ -2,7 +2,7 @@ from llama_index.core import VectorStoreIndex,get_response_synthesizer
 from llama_index.core.retrievers import VectorIndexRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.postprocessor import SimilarityPostprocessor
-from modules.ai_modules.retrieval_modules import local_models
+from ai_modules.retrieval_modules import local_models
 
 
 class BaseRetrieval():

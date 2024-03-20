@@ -1,1 +1,4 @@
 llama_index==0.10.13.post1
+llama-index-embeddings-huggingface
+llama-index-readers-web
+trafilatura==1.8.0

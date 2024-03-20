@@ -1,6 +1,6 @@
-from modules.ai_modules.retrieval_modules.ingestion_pipeline import LocalIngestion
-from components.loader.web_loader import WebLoader
-from components.retrieval.custom_retrieval import BaseRetrieval
+from ingestion_modules.ingestion_pipeline import LocalIngestion
+from ingestion_modules.loader.web_loader import WebLoader
+# from ai_modules.retrieval_modules.custom_retrieval import BaseRetrieval
 
 urls = ["https://en.wikipedia.org/wiki/Data_science"]
 
@@ -10,19 +10,10 @@ documents = WebLoader().load_documents(urls)
 # Define ingestion
 ingestion = LocalIngestion()
 nodes = ingestion.run(documents)
+print(len(nodes))
+print(nodes[0].text)
 
 # Query
-query = "What is Data Science"
-base_retrieval = BaseRetrieval(nodes=nodes)
-refs = base_retrieval.synthesize(query)
-print(refs)
-# for (i,ref) in enumerate(refs):
-#     print(f"Index: {i}")
-#     print(ref.text)
-#     print("\n")
+# query = "What is Data Science"
+# base_retrieval = BaseRetrieval(nodes=nodes)
 
-# custom_retrieval = CustomRetrieval(nodes=nodes)
-# ingestion.save_local_pipeline()
-
-# print(len(data[0].embedding))
-# print("\n")
