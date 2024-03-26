@@ -2,23 +2,26 @@ from llama_index.core import VectorStoreIndex,get_response_synthesizer
 from llama_index.core.retrievers import VectorIndexRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.postprocessor import SimilarityPostprocessor
-from ai_modules.retrieval_modules import local_models
 
 
 class BaseRetrieval():
-    def __init__(self,nodes=None,similarity_top_k=3):
+    def __init__(self,nodes=None,embedding_model=None,llm=None,similarity_top_k=3):
         if nodes is None:
             raise Exception("Please insert list of nodes data")
+        if embedding_model is None:
+            raise Exception("Please insert embedding model")
+        if llm is None:
+            raise Exception("Please insert llm model")
         # Nodes
         self.nodes = nodes
         # Index
-        self.index = VectorStoreIndex(self.nodes, embed_model=local_models.local_embedding)
+        self.index = VectorStoreIndex(self.nodes, embed_model=embedding_model)
         # Params
         self.similarity_top_k = similarity_top_k
         # Retrieval
         self._retrieval = VectorIndexRetriever(self.index,similarity_top_k=self.similarity_top_k)
         # configure response synthesizer
-        self._response_synthesizer = get_response_synthesizer(llm=local_models.local_llm)
+        self._response_synthesizer = get_response_synthesizer(llm=llm)
         # Set query engine
         self._set_query_engine()
 

@@ -2,11 +2,12 @@ from llama_index.llms.ollama import Ollama
 from llama_index.core.llms import ChatMessage
 
 class OllamaChatModel():
-    def __init__(self,model_name="zephyr"):
+    def __init__(self,model_name: str ="zephyr",temperature: float = 0.5):
         self.model_name = model_name
+        self.temperature = temperature
         self.history = []
         try:
-            self.chat_model = Ollama(model=self.model_name)
+            self.chat_model = Ollama(model=self.model_name,temperature=self.temperature)
         except:
             raise Exception("Cannot init chat model")
 
@@ -18,6 +19,9 @@ class OllamaChatModel():
             ChatMessage(role="user", content=user_prompt),
         ]
         return messages
+
+    def get_chat_model(self):
+        return self.chat_model
 
     def chat(self,system_prompt="",user_prompt=str,stream=False):
         # Define current message
