@@ -18,6 +18,7 @@ llm = open_model.get_chat_model()
 # Embedding model
 embedding_model = HFEmbedding.get_embedding_model()
 
+
 # Reader
 pdf_reader = BasePDFReader()
 documents = pdf_reader.read("reference/Loot.pdf")
@@ -38,17 +39,40 @@ text = [doc.text for doc in documents]
 text = "\n".join(text)
 # Splitting text
 # splitter = SentenceSplitter(chunk_size=1000,chunk_overlap=200)
-# splitter = SemanticSplitterNodeParser(embed_model=embedding_model)
-splitter = AdvanceTextSplitter(splitter_mode=Splitter_Type.TIKTOKEN_MODE)
-nodes = splitter.from_text(text,max_characters=400)
-# nodes = splitter.get_nodes_from_documents(documents)
-print(f"Number of nodes: {len(nodes)}")
-for (i,doc) in enumerate(nodes):
-    if i < 10:
-        print(f"Document {i}")
-        print(doc)
+splitter = SemanticSplitterNodeParser(embed_model=embedding_model)
+# splitter = AdvanceTextSplitter(splitter_mode=Splitter_Type.TIKTOKEN_MODE)
+# nodes = splitter.from_text(text,max_characters=400)
+nodes = splitter.get_nodes_from_documents(documents)
+# print(f"Number of nodes: {len(nodes)}")
+# for (i,doc) in enumerate(nodes):
+#     if i < 10:
+#         print(f"Document {i}")
+#         print(doc)
         # print(doc.metadata)
         # print(doc.node_id)
+
+from llama_index.storage.docstore.redis import RedisDocumentStore
+from llama_index.storage.index_store.redis import RedisIndexStore
+
+from llama_index.core import SimpleDirectoryReader, StorageContext
+
+REDIS_HOST = "127.0.0.1"
+REDIS_PORT = 6379
+
+storage_context = StorageContext.from_defaults(
+    docstore=RedisDocumentStore.from_host_and_port(
+        host=REDIS_HOST, port=REDIS_PORT, namespace="llama_index1"
+    ),
+    index_store=RedisIndexStore.from_host_and_port(
+        host=REDIS_HOST, port=REDIS_PORT, namespace="llama_index1"
+    ),
+)
+storage_context.docstore.add_documents(nodes)
+print(len(storage_context.docstore.docs))
+
+vector_index = VectorStoreIndex(nodes, storage_context=storage_context,embed_model=embedding_model)
+storage_context.persist(persist_dir="storage")
+
 
 # Retrieve phase
 # query_engine = custom_retrieval.BaseRetrieval(nodes=nodes,embedding_model=embedding_model,llm=llm)

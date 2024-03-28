@@ -2,6 +2,7 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from config import params
 from typing import Union
 from strenum import StrEnum
+
 class EmbeddingNameEnum(StrEnum):
     BGE_SMALL = "BAAI/bge-small-en-v1.5",
     BGE_BASE = "BAAI/bge-base-en-v1.5",
