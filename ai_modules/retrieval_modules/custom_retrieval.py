@@ -1,11 +1,11 @@
-from llama_index.core import VectorStoreIndex,get_response_synthesizer
+from llama_index.core import VectorStoreIndex, get_response_synthesizer
 from llama_index.core.retrievers import VectorIndexRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.postprocessor import SimilarityPostprocessor
 
 
 class BaseRetrieval():
-    def __init__(self,nodes=None,embedding_model=None,llm=None,similarity_top_k=3):
+    def __init__(self, nodes=None, embedding_model=None, llm=None, similarity_top_k=3):
         if nodes is None:
             raise Exception("Please insert list of nodes data")
         if embedding_model is None:
@@ -19,21 +19,21 @@ class BaseRetrieval():
         # Params
         self.similarity_top_k = similarity_top_k
         # Retrieval
-        self._retrieval = VectorIndexRetriever(self.index,similarity_top_k=self.similarity_top_k)
+        self._retrieval = VectorIndexRetriever(self.index, similarity_top_k=self.similarity_top_k)
         # configure response synthesizer
         self._response_synthesizer = get_response_synthesizer(llm=llm)
         # Set query engine
         self._set_query_engine()
-
 
     def _set_query_engine(self):
         # Query engine
         self._query_engine = RetrieverQueryEngine(
             retriever=self._retrieval,
             response_synthesizer=self._response_synthesizer,
-            node_postprocessors= self._set_postprocessors()
+            node_postprocessors=self._set_postprocessors()
         )
-    def _set_postprocessors(self,node_postprocessors=None):
+
+    def _set_postprocessors(self, node_postprocessors=None):
         if node_postprocessors is None:
             default_postprocessors = [SimilarityPostprocessor(similarity_cutoff=0.7)]
             self._node_postprocessors = default_postprocessors
@@ -42,26 +42,24 @@ class BaseRetrieval():
         self._node_postprocessors = node_postprocessors
         return self._node_postprocessors
 
-    def query(self,query):
+    def query(self, query):
         # Query to get answer
         return self._query_engine.query(query)
 
-    def retrieve(self,query):
+    def retrieve(self, query):
         # Retrieve documents relevant
         return self._query_engine.retrieve(query)
 
 
 class CustomRetrieval(BaseRetrieval):
-    def __init__(self,nodes=None,similarity_top_k=3):
-        super().__init__(nodes=nodes,similarity_top_k=similarity_top_k)
+    def __init__(self, nodes=None, similarity_top_k=3):
+        super().__init__(nodes=nodes, similarity_top_k=similarity_top_k)
 
-    def set_retrieval(self,retrieval:BaseRetrieval):
+    def set_retrieval(self, retrieval: BaseRetrieval):
         # Replace retrieval
-        if not isinstance(retrieval,BaseRetrieval):
+        if not isinstance(retrieval, BaseRetrieval):
             raise Exception("Please insert right type of retrieval")
         self._retrieval = retrieval
 
         # Set query engine
         self._set_query_engine()
-
-
