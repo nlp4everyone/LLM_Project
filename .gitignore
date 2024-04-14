@@ -1,0 +1,4 @@
+config/__pycache__
+.idea
+ai_modules/llm_modules/__pycache__
+.env
