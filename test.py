@@ -55,10 +55,3 @@
 # )
 # print(dir(llm))
 
-from llama_index.llms.gemini import Gemini
-import os
-
-GOOGLE_API_KEY = "AIzaSyASWApYD-MHcEW2FHpEe9FmuW5GsQpWbqY"  # add your GOOGLE API key here
-os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
-resp = Gemini().complete("Write a poem about a magic backpack")
-print(resp)

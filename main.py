@@ -1,5 +1,5 @@
 from ingestion_modules.ingestion_pipeline import LocalIngestion
-from ingestion_modules.loader.web_loader import WebLoader
+from ingestion_modules.custom_loader.web_loader import WebLoader
 # from ai_modules.retrieval_modules.custom_retrieval import BaseRetrieval
 
 urls = ["https://en.wikipedia.org/wiki/Data_science"]

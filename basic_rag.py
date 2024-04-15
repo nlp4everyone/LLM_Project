@@ -3,7 +3,7 @@ from ai_modules.embedding_modules.open_embedding import HFEmbedding,EmbeddingNam
 from ingestion_modules.custom_loader.pdf_loader import BasePDFReader
 from llama_index.core.node_parser import TokenTextSplitter,SentenceSplitter,SemanticSplitterNodeParser
 from ingestion_modules.text_splitter.custom_splitter import AdvanceTextSplitter,Splitter_Type
-from ai_modules.llm_modules.open_llm import OllamaChatModel
+from ai_modules.chatmodel_modules.open_chatmodel import OllamaChatModel
 from llama_index.core import VectorStoreIndex
 from ai_modules.retrieval_modules import custom_retrieval
 from config import params
@@ -13,7 +13,7 @@ os.makedirs(params.cache_folder,exist_ok=True)
 
 # LLM
 open_model = OllamaChatModel(temperature=0)
-llm = open_model.get_chat_model()
+llm = open_model.chat_model
 
 # Embedding model
 embedding_model = HFEmbedding.get_embedding_model()

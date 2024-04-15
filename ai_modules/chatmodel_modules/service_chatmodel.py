@@ -1,6 +1,6 @@
 from config.params import *
 from typing import Union,Literal
-from ai_modules.llm_modules.open_llm import OllamaChatModel
+from ai_modules.chatmodel_modules.open_chatmodel import OllamaChatModel
 from llama_index.llms.cohere import Cohere
 from llama_index.llms.ai21 import AI21
 from llama_index.llms.anthropic import Anthropic
