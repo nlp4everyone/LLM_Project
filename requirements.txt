@@ -15,4 +15,8 @@ llama-index-llms-openai
 llama-index-llms-gemini
 google-generativeai
 llama-index-embeddings-cohere
+llama-index-llms-together
+llama-index-llms-llama-api
+llama-index-embeddings-together
+llama-index-embeddings-fastembed
 pydantic==1.10.14

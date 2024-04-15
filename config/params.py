@@ -70,13 +70,22 @@ supported_services = {
     },
     "TOGETHER":{
         "CHAT_MODELS":["zero-one-ai/Yi-34B-Chat","cognitivecomputations/dolphin-2.5-mixtral-8x7b","mistralai/Mistral-7B-Instruct-v0.2","NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO","Qwen/Qwen1.5-32B-Chat"],
-        "KEY": TOGETHER_KEY
         # List model: https://docs.together.ai/docs/inference-models
+        "EMBBEDDING_MODELS":["togethercomputer/m2-bert-80M-8k-retrieval","togethercomputer/m2-bert-80M-32k-retrieval","BAAI/bge-large-en-v1.5","BAAI/bge-base-en-v1.5","sentence-transformers/msmarco-bert-base-dot-v5"],
+        # List embbeding: https://docs.together.ai/docs/embedding-models
+        "KEY": TOGETHER_KEY
+
     },
     "GEMINI":{
         "CHAT_MODELS":["models/gemini-1.5-pro-latest","models/gemini-pro","models/gemini-pro-vision"],
         "KEY": GEMINI_KEY
         # List model: https://ai.google.dev/models/gemini
         # Gemini Pro 60 requests/min
+    },
+    "QDRANT":{
+        "CHAT_MODELS":[],
+        "EMBBEDDING_MODELS":["BAAI/bge-small-en-v1.5","sentence-transformers/all-MiniLM-L6-v2","nomic-ai/nomic-embed-text-v1.5","BAAI/bge-base-en-v1.5","mixedbread-ai/mxbai-embed-large-v1"],
+        "KEY": ""
+        # Qdrant Embedding: https://qdrant.github.io/fastembed/examples/Supported_Models/
     }
 }

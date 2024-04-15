@@ -32,26 +32,26 @@ class ServiceChatModel(OllamaChatModel):
         self.api_key = supported_services[service_name]["KEY"]
 
         # Default model
-        self.chat_model = AI21(api_key=self.api_key,maxTokens=self.max_tokens,temperature=self.temperature)
+        self._chat_model = AI21(api_key=self.api_key,maxTokens=self.max_tokens,temperature=self.temperature)
 
         # Other service
         if service_name == "ANTHROPIC":
-            self.chat_model = Anthropic(api_key=self.api_key,max_tokens=self.max_tokens,temperature=self.temperature)
+            self._chat_model = Anthropic(api_key=self.api_key,max_tokens=self.max_tokens,temperature=self.temperature)
         elif service_name == "COHERE":
-            self.chat_model = Cohere(api_key=self.api_key,max_tokens=self.max_tokens,temperature=self.temperature)
+            self._chat_model = Cohere(api_key=self.api_key,max_tokens=self.max_tokens,temperature=self.temperature)
         elif service_name == "GRADIENT":
-            self.chat_model = GradientBaseModelLLM(max_tokens=400,access_token=self.api_key,workspace_id="e27efd0c-635f-4113-bee6-80fec5b3aacd_workspace")
+            self._chat_model = GradientBaseModelLLM(max_tokens=400,access_token=self.api_key,workspace_id="e27efd0c-635f-4113-bee6-80fec5b3aacd_workspace")
         elif service_name == "GROQ":
-            self.chat_model = Groq(api_key=self.api_key)
+            self._chat_model = Groq(api_key=self.api_key)
         elif service_name == "KONKO":
-            self.chat_model = Konko(temperature=self.temperature,max_tokens=self.max_tokens,konko_api_key=KONKO_KEY)
+            self._chat_model = Konko(temperature=self.temperature,max_tokens=self.max_tokens,konko_api_key=KONKO_KEY)
         elif service_name == "LLAMAAPI":
-            self.chat_model = LlamaAPI(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
+            self._chat_model = LlamaAPI(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
         elif service_name == "OPENAI":
-            self.chat_model = OpenAI(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
+            self._chat_model = OpenAI(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
         elif service_name == "PERPLEXITY":
-            self.chat_model = Perplexity(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
+            self._chat_model = Perplexity(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
         elif service_name == "TOGETHER":
-            self.chat_model = TogetherLLM(api_key=self.api_key)
+            self._chat_model = TogetherLLM(api_key=self.api_key)
         elif service_name == "GEMINI":
-            self.chat_model = Gemini(api_key=self.api_key,temperature=self.temperature,max_tokens=self.max_tokens)
+            self._chat_model = Gemini(api_key=self.api_key,temperature=self.temperature,max_tokens=self.max_tokens)

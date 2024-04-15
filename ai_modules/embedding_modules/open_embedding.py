@@ -18,8 +18,14 @@ class HFEmbedding():
         self.batch_size = batch_size
 
         # Define cache folder
-        # self._embedding_model = HuggingFaceEmbedding(model_name = self.model_name,cache_folder=self._cached_folder_path,embed_batch_size=self.batch_size)
         self._embedding_model = None
+        # Only create embedding model with main class
+        if self.__class__.__name__ == "HFEmbedding":
+            self._embedding_model = HuggingFaceEmbedding(model_name = self.model_name,cache_folder=self._cached_folder_path,embed_batch_size=self.batch_size)
+
+    def get_embedding_model(self):
+        # Return embedding model
+        return self._embedding_model
 
     def get_text_embedding(self,input: str):
         # Get text embedding
