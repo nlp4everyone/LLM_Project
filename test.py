@@ -55,3 +55,11 @@
 # )
 # print(dir(llm))
 
+# from ai_modules.embedding_modules.open_embedding import HFEmbedding
+from ai_modules.embedding_modules.service_embedding import ServiceEmbedding
+
+# embedding_model = HFEmbedding()
+# embedding_vector = embedding_model.get_text_embedding("Hello")
+embedding_model = ServiceEmbedding(service_name="TOGETHER")
+embbedding = embedding_model.get_text_embedding("Hello")
+print(embbedding)

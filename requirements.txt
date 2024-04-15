@@ -14,4 +14,5 @@ llama-index-llms-perplexity
 llama-index-llms-openai
 llama-index-llms-gemini
 google-generativeai
+llama-index-embeddings-cohere
 pydantic==1.10.14

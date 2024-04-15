@@ -1,4 +1,6 @@
 config/__pycache__
 .idea
 ai_modules/llm_modules/__pycache__
+ai_modules/embedding_modules/__pycache__
 .env
+local_cache

@@ -3,15 +3,38 @@ from config import params
 from typing import Union
 from strenum import StrEnum
 
-class EmbeddingNameEnum(StrEnum):
+class HFEmbeddingModel(StrEnum):
     BGE_SMALL = "BAAI/bge-small-en-v1.5",
     BGE_BASE = "BAAI/bge-base-en-v1.5",
     BGE_LARGE = "BAAI/bge-large-en-v1.5",
 
 
 class HFEmbedding():
+    def __init__(self,model_name: Union[HFEmbeddingModel,str] = HFEmbeddingModel.BGE_SMALL,batch_size: int = 10,max_length: int = 1024, cached_folder_path = params.cache_folder):
+        # Define variable
+        self._cached_folder_path = cached_folder_path
+        self.model_name = model_name
+        self.max_length = max_length
+        self.batch_size = batch_size
 
-    @staticmethod
-    def get_embedding_model(model_name: Union[EmbeddingNameEnum,str] = EmbeddingNameEnum.BGE_SMALL, cached_folder = params.cache_folder):
-        # Return embedding
-        return HuggingFaceEmbedding(model_name = model_name,cache_folder=cached_folder)
+        # Define cache folder
+        # self._embedding_model = HuggingFaceEmbedding(model_name = self.model_name,cache_folder=self._cached_folder_path,embed_batch_size=self.batch_size)
+        self._embedding_model = None
+
+    def get_text_embedding(self,input: str):
+        # Get text embedding
+        return self._embedding_model.get_text_embedding(input)
+
+    async def aget_text_embedding(self,input: str):
+        # Get text embedding
+        embedding = await self._embedding_model.aget_text_embedding(input)
+        return embedding
+
+    def get_query_embedding(self, input: str):
+        # Get text embedding
+        return self._embedding_model.get_query_embedding(input)
+
+    async def aget_query_embedding(self, input: str):
+        # Get text embedding
+        embedding = await self._embedding_model.aget_query_embedding(input)
+        return embedding

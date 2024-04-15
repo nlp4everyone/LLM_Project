@@ -22,7 +22,7 @@ class ServiceChatModel(OllamaChatModel):
 
         # Define history
         self.history = []
-
+        #
         # Service support
         self.list_services = list(supported_services.keys())
         # Check service available
