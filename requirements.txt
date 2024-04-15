@@ -9,4 +9,9 @@ llama-index-llms-anthropic
 llama-index-llms-cohere
 llama-index-llms-gradient
 llama-index-llms-groq
+llama-index-llms-konko
+llama-index-llms-perplexity
+llama-index-llms-openai
+llama-index-llms-gemini
+google-generativeai
 pydantic==1.10.14

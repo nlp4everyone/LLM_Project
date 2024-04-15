@@ -6,6 +6,12 @@ from llama_index.llms.ai21 import AI21
 from llama_index.llms.anthropic import Anthropic
 from llama_index.llms.gradient import GradientBaseModelLLM
 from llama_index.llms.groq import Groq
+from llama_index.llms.konko import Konko
+from llama_index.llms.llama_api import LlamaAPI
+from llama_index.llms.openai import OpenAI
+from llama_index.llms.perplexity import Perplexity
+from llama_index.llms.together import TogetherLLM
+from llama_index.llms.gemini import Gemini
 
 class ServiceChatModel(OllamaChatModel):
     def __init__(self,model_name: Union[str,None] = None,service_name: str = "AI21",temperature: float = 0.8,max_tokens :int = 512):
@@ -36,4 +42,16 @@ class ServiceChatModel(OllamaChatModel):
         elif service_name == "GRADIENT":
             self.chat_model = GradientBaseModelLLM(max_tokens=400,access_token=self.api_key,workspace_id="e27efd0c-635f-4113-bee6-80fec5b3aacd_workspace")
         elif service_name == "GROQ":
-            self.chat_model = Groq(model="mixtral-8x7b-32768", api_key=self.api_key)
+            self.chat_model = Groq(api_key=self.api_key)
+        elif service_name == "KONKO":
+            self.chat_model = Konko(temperature=self.temperature,max_tokens=self.max_tokens,konko_api_key=KONKO_KEY)
+        elif service_name == "LLAMAAPI":
+            self.chat_model = LlamaAPI(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
+        elif service_name == "OPENAI":
+            self.chat_model = OpenAI(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
+        elif service_name == "PERPLEXITY":
+            self.chat_model = Perplexity(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
+        elif service_name == "TOGETHER":
+            self.chat_model = TogetherLLM(api_key=self.api_key)
+        elif service_name == "GEMINI":
+            self.chat_model = Gemini(api_key=self.api_key,temperature=self.temperature,max_tokens=self.max_tokens)
