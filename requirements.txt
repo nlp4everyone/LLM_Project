@@ -19,4 +19,7 @@ llama-index-llms-together
 llama-index-llms-llama-api
 llama-index-embeddings-together
 llama-index-embeddings-fastembed
+llama-index-embeddings-voyageai
+llama-index-embeddings-openai
+llama-index-embeddings-nomic
 pydantic==1.10.14

@@ -1,16 +1,16 @@
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from config import params
-from typing import Union
-from strenum import StrEnum
+from typing import Union,Optional
+# from strenum import StrEnum
+from enum import Enum
+from llama_index.embeddings.fastembed import FastEmbedEmbedding
 
-class HFEmbeddingModel(StrEnum):
-    BGE_SMALL = "BAAI/bge-small-en-v1.5",
-    BGE_BASE = "BAAI/bge-base-en-v1.5",
-    BGE_LARGE = "BAAI/bge-large-en-v1.5",
+class OpenService(Enum):
+    HuggingFace = 0,
+    FastEmbed = 1,
 
-
-class HFEmbedding():
-    def __init__(self,model_name: Union[HFEmbeddingModel,str] = HFEmbeddingModel.BGE_SMALL,batch_size: int = 10,max_length: int = 1024, cached_folder_path = params.cache_folder):
+class OpenEmbedding():
+    def __init__(self,model_name: Optional[str] = None,service_name: OpenService = OpenService.HuggingFace,batch_size: int = 10,max_length: int = 1024, cached_folder_path = params.cache_folder):
         # Define variable
         self._cached_folder_path = cached_folder_path
         self.model_name = model_name
@@ -20,8 +20,19 @@ class HFEmbedding():
         # Define cache folder
         self._embedding_model = None
         # Only create embedding model with main class
-        if self.__class__.__name__ == "HFEmbedding":
-            self._embedding_model = HuggingFaceEmbedding(model_name = self.model_name,cache_folder=self._cached_folder_path,embed_batch_size=self.batch_size)
+        if self.__class__.__name__ == "OpenEmbedding":
+            # Hugging Face
+            if service_name == OpenService.HuggingFace:
+                self._embedding_model = HuggingFaceEmbedding(cache_folder=self._cached_folder_path,embed_batch_size=self.batch_size)
+            # Fast Embed
+            elif service_name == OpenService.FastEmbed:
+                self._embedding_model = FastEmbedEmbedding(cache_dir=self._cached_folder_path)
+            else:
+                raise Exception(f"Service {service_name} is not supported!")
+            # Insert params
+            self._embedding_model.max_length = self.max_length
+            # Check model name
+            if self.model_name is not None: self._embedding_model.model_name = model_name
 
     def get_embedding_model(self):
         # Return embedding model

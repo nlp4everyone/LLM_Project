@@ -37,7 +37,7 @@ class OllamaChatModel():
         self.history.extend(chat_template)
 
         # Get response ( Specify streaming mode)
-        res = self._chat_model.chat(self.history) if not streaming else self.chat_model.stream_chat(self.history)
+        res = self._chat_model.chat(self.history) if not streaming else self._chat_model.stream_chat(self.history)
         return res
 
     async def achat(self, system_prompt: str, user_prompt: str,streaming:bool = False):

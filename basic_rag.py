@@ -1,6 +1,6 @@
 import os,time
-from ai_modules.embedding_modules.open_embedding import HFEmbedding,EmbeddingNameEnum
-from ingestion_modules.custom_loader.pdf_loader import BasePDFReader
+from ai_modules.embedding_modules.open_embedding import OpenEmbedding,OpenService
+from ingestion_modules.custom_loader.custom_pdf_loader import CustomPDFReader
 from llama_index.core.node_parser import TokenTextSplitter,SentenceSplitter,SemanticSplitterNodeParser
 from ingestion_modules.text_splitter.custom_splitter import AdvanceTextSplitter,Splitter_Type
 from ai_modules.chatmodel_modules.open_chatmodel import OllamaChatModel
@@ -13,14 +13,15 @@ os.makedirs(params.cache_folder,exist_ok=True)
 
 # LLM
 open_model = OllamaChatModel(temperature=0)
-llm = open_model.chat_model
+llm = open_model.get_chat_model()
 
 # Embedding model
-embedding_model = HFEmbedding.get_embedding_model()
+embedding_service = OpenEmbedding()
+embedding_model = embedding_service.get_embedding_model()
 
 
 # Reader
-pdf_reader = BasePDFReader()
+pdf_reader = CustomPDFReader()
 documents = pdf_reader.read("reference/Loot.pdf")
 # print("Before chunking")
 # print(f"Total text: {len(documents)}")

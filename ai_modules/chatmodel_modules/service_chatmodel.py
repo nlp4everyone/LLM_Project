@@ -55,3 +55,5 @@ class ServiceChatModel(OllamaChatModel):
             self._chat_model = TogetherLLM(api_key=self.api_key)
         elif service_name == "GEMINI":
             self._chat_model = Gemini(api_key=self.api_key,temperature=self.temperature,max_tokens=self.max_tokens)
+        else:
+            raise Exception(f"Service {service_name} is not supported!")

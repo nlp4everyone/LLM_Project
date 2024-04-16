@@ -55,17 +55,4 @@
 # )
 # print(dir(llm))
 
-# from ai_modules.embedding_modules.open_embedding import HFEmbedding
-from ai_modules.embedding_modules.service_embedding import ServiceEmbedding
 
-# embedding_model = HFEmbedding()
-# embedding_vector = embedding_model.get_text_embedding("Hello")
-# embedding_model = ServiceEmbedding(service_name="TOGETHER")
-# embbedding = embedding_model.get_text_embedding("Hello")
-from llama_index.embeddings.fastembed import FastEmbedEmbedding
-
-embed_model = FastEmbedEmbedding(model_name="BAAI/bge-small-en-v1.5")
-
-embeddings = embed_model.get_text_embedding("Some text to embed.")
-print(len(embeddings))
-print(embeddings[:5])
