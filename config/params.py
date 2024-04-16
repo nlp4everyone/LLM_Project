@@ -18,6 +18,8 @@ TOGETHER_KEY = os.getenv("TOGETHER_KEY") # 25$ starter bundle
 GEMINI_KEY = os.getenv("GEMINI_KEY") # Free to use
 VOYAGE_KEY = os.getenv("VOYAGE_KEY") # Free for 50M first tokens
 NOMIC_KEY = os.getenv("NOMIC_KEY") # Free for 50M first tokens
+LLAMAPARSE_KEY = os.getenv("LLAMAPARSE_KEY") # https://cloud.llamaindex.ai/parse
+
 
 # Define service
 supported_services = {
