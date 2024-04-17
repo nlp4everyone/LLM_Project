@@ -2,7 +2,8 @@ from semantic_text_splitter import TextSplitter
 from typing import Union,List,Tuple
 from enum import Enum
 from tokenizers import Tokenizer
-
+from llama_index.core import Document
+from llama_index.core.node_parser import NodeParser
 
 class Splitter_Type(Enum):
     CHARACTER_MODE = 0,
@@ -12,6 +13,7 @@ class Splitter_Type(Enum):
 class SemanticTextSplitter():
     # Reference (https://pypi.org/project/semantic-text-splitter/)
     def __init__(self,splitter_mode = Splitter_Type.CHARACTER_MODE):
+        super().__init__()
         # Base mode
         self.splitter = TextSplitter()
         if splitter_mode == Splitter_Type.HUGGINGFACE_MODE:
@@ -24,3 +26,11 @@ class SemanticTextSplitter():
         if not type(input) == str:
             raise Exception("Please insert list of string")
         return self.splitter.chunks(input,max_characters)
+
+    def from_documents(self,documents: List[Document],max_characters : Union[int,Tuple[int]]= (100,1000)):
+        # Join document
+        text = [doc.text for doc in documents]
+        text = "\n".join(text)
+
+        # Return value
+        return self.splitter.chunks(text, max_characters)

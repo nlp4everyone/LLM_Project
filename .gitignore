@@ -1,8 +1,10 @@
-config/__pycache__
 .idea
-ai_modules/llm_modules/__pycache__
-ai_modules/embedding_modules/__pycache__
 .env
 local_cache
-ingestion_modules/custom_loader/__pycache__
 data
+ai_modules/llm_modules/__pycache__
+ai_modules/embedding_modules/__pycache__
+config/__pycache__
+ingestion_modules/custom_loader/__pycache__
+ingestion_modules/text_splitter/__pycache__/
+ai_modules/chatmodel_modules/__pycache__
