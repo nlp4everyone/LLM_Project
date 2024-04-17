@@ -55,6 +55,3 @@
 # )
 # print(dir(llm))
 
-from ingestion_modules.custom_loader.custom_pdf_loader import CustomPDFReader,PDFProvider
-pdf_reader = CustomPDFReader(pdf_provider=PDFProvider.LLAMAPARSE)
-data = pdf_reader.load("data/whales.pdf")

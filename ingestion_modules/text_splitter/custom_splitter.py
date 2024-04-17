@@ -3,13 +3,14 @@ from typing import Union,List,Tuple
 from enum import Enum
 from tokenizers import Tokenizer
 
-# Reference (https://pypi.org/project/semantic-text-splitter/)
+
 class Splitter_Type(Enum):
     CHARACTER_MODE = 0,
     TIKTOKEN_MODE = 1,
     HUGGINGFACE_MODE = 2
 
-class AdvanceTextSplitter():
+class SemanticTextSplitter():
+    # Reference (https://pypi.org/project/semantic-text-splitter/)
     def __init__(self,splitter_mode = Splitter_Type.CHARACTER_MODE):
         # Base mode
         self.splitter = TextSplitter()

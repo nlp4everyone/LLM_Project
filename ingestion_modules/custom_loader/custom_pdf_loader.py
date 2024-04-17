@@ -27,12 +27,23 @@ class CustomPDFReader():
         # LlamaParse Reader
         elif self._pdf_provider == PDFProvider.LLAMAPARSE:
             self._reader = LlamaParse(api_key=LLAMAPARSE_KEY)
+        else:
+            raise Exception(f"Service {self._pdf_provider} is not supported!")
 
-    def load(self,file_path:Union[List[str],str]):
+    def load_data(self,file_path:Union[List[str],str]):
         # Check file existed
-        if not os.path.exists(file_path):
-            raise Exception("File is not existed!")
+        if isinstance(file_path,str):
+            if not os.path.exists(file_path):
+                raise Exception("File is not existed!")
         # Return value
         return self._reader.load_data(file_path)
 
+    async def aload_data(self,file_path:Union[List[str],str]):
+        # Check file existed
+        if isinstance(file_path, str):
+            if not os.path.exists(file_path):
+                raise Exception("File is not existed!")
+        # Return value
+        data = await self._reader.aload_data(file_path)
+        return data
 
