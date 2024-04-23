@@ -12,9 +12,23 @@ from llama_index.llms.openai import OpenAI
 from llama_index.llms.perplexity import Perplexity
 from llama_index.llms.together import TogetherLLM
 from llama_index.llms.gemini import Gemini
+from strenum import StrEnum
+
+class ServiceProvider(StrEnum):
+    ANTHROPIC = "ANTHROPIC",
+    COHERE = "COHERE",
+    GRADIENT = "GRADIENT",
+    GROQ = "GROQ",
+    KONKO = "KONKO",
+    LLAMAAPI = "LLAMAAPI",
+    OPENAI = "OPENAI",
+    PERPLEXITY = "PERPLEXITY",
+    TOGETHER = "TOGETHER",
+    GEMINI = "GEMINI"
+    AI21 = "AI21"
 
 class ServiceChatModel(OllamaChatModel):
-    def __init__(self,model_name: Union[str,None] = None,service_name: str = "AI21",temperature: float = 0.8,max_tokens :int = 512):
+    def __init__(self,model_name: Union[str,None] = None,service_name: ServiceProvider = ServiceProvider.GEMINI,temperature: float = 0.8,max_tokens :int = 512):
         super().__init__()
         # Define variales
         self.temperature = temperature

@@ -27,10 +27,10 @@ pipeline = IngestionPipeline(
 docs = pipeline.run(documents=docs)
 
 # Convert nodes to docs
-# docs = utils.convert_nodes_to_docs(docs)
+docs = utils.convert_nodes_to_docs(docs)
 
 
-# index = VectorStoreIndex.from_documents(docs,embed_model = embedding_model)
+index = VectorStoreIndex.from_documents(docs,embed_model = embedding_model)
 
 # client = qdrant_client.QdrantClient(
 #     url="https://node-0-eeae207b-0004-44d8-bf80-56e76aa88392.us-east4-0.gcp.cloud.qdrant.io",
@@ -44,9 +44,9 @@ docs = pipeline.run(documents=docs)
 #     storage_context=storage_context,
 #     embed_model = embedding_model
 # )
-from ai_modules.chatmodel_modules.open_chatmodel import OllamaChatModel
-chat_model = OllamaChatModel()
-llm = chat_model.get_chat_model()
+from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModel
+service_chatmodel = ServiceChatModel()
+llm = service_chatmodel.get_chat_model()
 
 query_engine = index.as_query_engine(llm=llm)
 ans = query_engine.query("Who is Neymar?")
