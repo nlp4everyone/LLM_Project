@@ -1,6 +1,6 @@
 from llama_index.llms.ollama import Ollama
 from llama_index.core.llms import ChatMessage
-from typing import Union
+from typing import Union,Optional
 
 
 class OllamaChatModel():
@@ -30,7 +30,7 @@ class OllamaChatModel():
         # Return chat model
         return self._chat_model
 
-    def chat(self,system_prompt:str,user_prompt:str,streaming:bool = False):
+    def chat(self,user_prompt:str,system_prompt: Optional[str] = "",streaming:bool = False) :
         # Get chat template
         chat_template = self._chat_template(system_prompt,user_prompt)
         # Extend history
@@ -40,7 +40,7 @@ class OllamaChatModel():
         res = self._chat_model.chat(self.history) if not streaming else self._chat_model.stream_chat(self.history)
         return res
 
-    async def achat(self, system_prompt: str, user_prompt: str,streaming:bool = False):
+    async def achat(self, user_prompt: str, system_prompt: Optional[str] = "", streaming:bool = False):
         # Get chat template
         chat_template = self._chat_template(system_prompt, user_prompt,)
         # Extend history

@@ -8,3 +8,4 @@ config/__pycache__
 ingestion_modules/custom_loader/__pycache__
 ingestion_modules/text_splitter/__pycache__/
 ai_modules/chatmodel_modules/__pycache__
+ingestion_modules/__pycache__/
