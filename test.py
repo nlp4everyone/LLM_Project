@@ -9,13 +9,13 @@ from ingestion_modules import utils
 
 # Qdrant
 from llama_index.core import StorageContext
-from llama_index.vector_stores.qdrant import QdrantVectorStore
+# from llama_index.vector_stores.qdrant import QdrantVectorStore
 from llama_index.core import VectorStoreIndex
 from llama_index.core.vector_stores import SimpleVectorStore
-import qdrant_client
-from ai_modules.embedding_modules.open_embedding import OpenEmbedding,OpenService
-open_embedding = OpenEmbedding(service_name=OpenService.FastEmbed)
-embedding_model = open_embedding.get_embedding_model()
+# import qdrant_client
+from ai_modules.embedding_modules.open_embedding import OpenEmbeddingProvider,OpenService
+embedding_provider = OpenEmbeddingProvider(service_name=OpenService.FastEmbed)
+embedding_model = embedding_provider.get_embedding_model()
 
 # Ingestion
 from llama_index.core.ingestion import IngestionPipeline
@@ -26,11 +26,18 @@ pipeline = IngestionPipeline(
 )
 docs = pipeline.run(documents=docs)
 
+
+import time
+
 # Convert nodes to docs
 docs = utils.convert_nodes_to_docs(docs)
 
 
+start_time = time.perf_counter()
 index = VectorStoreIndex.from_documents(docs,embed_model = embedding_model)
+duration = time.perf_counter() - start_time
+print(duration)
+
 
 # client = qdrant_client.QdrantClient(
 #     url="https://node-0-eeae207b-0004-44d8-bf80-56e76aa88392.us-east4-0.gcp.cloud.qdrant.io",
@@ -44,11 +51,11 @@ index = VectorStoreIndex.from_documents(docs,embed_model = embedding_model)
 #     storage_context=storage_context,
 #     embed_model = embedding_model
 # )
-from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModel
-service_chatmodel = ServiceChatModel()
-llm = service_chatmodel.get_chat_model()
-
-query_engine = index.as_query_engine(llm=llm)
-ans = query_engine.query("Who is Neymar?")
-print(ans)
+# from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModel
+# service_chatmodel = ServiceChatModel()
+# llm = service_chatmodel.get_chat_model()
+# #
+# query_engine = index.as_query_engine(llm=llm)
+# ans = query_engine.query("Who is Neymar?")
+# print(ans)
 

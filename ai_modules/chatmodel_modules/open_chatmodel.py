@@ -3,7 +3,7 @@ from llama_index.core.llms import ChatMessage
 from typing import Union,Optional
 
 
-class OllamaChatModel():
+class OpenChatModelProvider():
     def __init__(self,model_name: Union[str,None] = "zephyr",temperature: float = 0.8,max_tokens :int = 512):
         # Define variales
         self.temperature = temperature

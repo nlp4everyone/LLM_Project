@@ -1,6 +1,6 @@
 from typing import Union,Literal,Optional
 from config.params import *
-from ai_modules.embedding_modules.open_embedding import OpenEmbedding
+from ai_modules.embedding_modules.open_embedding import OpenEmbeddingProvider
 from llama_index.embeddings.together import TogetherEmbedding
 from llama_index.embeddings.cohere import CohereEmbedding
 from llama_index.embeddings.voyageai import VoyageEmbedding
@@ -8,7 +8,7 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.embeddings.nomic import NomicEmbedding
 
 # Elastic Search Embedding: Notitfy
-class ServiceEmbedding(OpenEmbedding):
+class ServiceEmbeddingProvider(OpenEmbeddingProvider):
     def __init__(self,model_name: Optional[str] = None,service_name: Literal["COHERE","GRADIENT","MISTRAL","OPENAI","TOGETHER","VOYAGE","NOMIC"] = "COHERE",batch_size: int = 10):
         super().__init__()
         # Define variables
