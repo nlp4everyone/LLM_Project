@@ -14,7 +14,7 @@ from llama_index.llms.together import TogetherLLM
 from llama_index.llms.gemini import Gemini
 from strenum import StrEnum
 
-class ServiceChatModelProvider(StrEnum):
+class ChatModelService(StrEnum):
     ANTHROPIC = "ANTHROPIC",
     COHERE = "COHERE",
     GRADIENT = "GRADIENT",
@@ -28,7 +28,7 @@ class ServiceChatModelProvider(StrEnum):
     AI21 = "AI21"
 
 class ServiceChatModelProvider(OpenChatModelProvider):
-    def __init__(self,model_name: Union[str,None] = None,service_name: ServiceChatModelProvider = ServiceChatModelProvider.GEMINI,temperature: float = 0.8,max_tokens :int = 512):
+    def __init__(self,model_name: Union[str,None] = None,service_name: ChatModelService = ChatModelService.GEMINI,temperature: float = 0.8,max_tokens :int = 512):
         super().__init__()
         # Define variales
         self.temperature = temperature

@@ -16,7 +16,7 @@ class OpenChatModelProvider():
         # Define chat model
         self._chat_model = None
         # Only for Ollama Chat Model
-        if self.__class__.__name__ == "OllamaChatModel":
+        if self.__class__.__name__ == "OpenChatModelProvider":
             self._chat_model = Ollama(model=self.model_name,temperature=self.temperature)
 
     def _chat_template(self,system_prompt:str,user_prompt:str):

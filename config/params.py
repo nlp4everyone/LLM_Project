@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 load_dotenv()
-cache_folder = "local_cache"
+cache_folder = "local_embedding_cache/"
 
 # Model config
 AI21_KEY = os.getenv("AI21_KEY")
