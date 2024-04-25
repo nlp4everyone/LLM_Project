@@ -38,3 +38,4 @@ class ServiceEmbeddingProvider(OpenEmbeddingProvider):
             self._embedding_model = NomicEmbedding(api_key=self.api_key,embed_batch_size=self.batch_size)
         else:
             raise Exception(f"Service {service_name} is not supported!")
+

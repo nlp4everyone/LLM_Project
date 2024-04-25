@@ -71,3 +71,5 @@ class ServiceChatModelProvider(OpenChatModelProvider):
             self._chat_model = Gemini(api_key=self.api_key,temperature=self.temperature,max_tokens=self.max_tokens)
         else:
             raise Exception(f"Service {service_name} is not supported!")
+
+        if self.__class__.__name__ == "ServiceChatModelProvider": print(f"Launch {service_name} with temperature {self.temperature}")
