@@ -1,15 +1,15 @@
 import os.path
-
 import chromadb
-from enum import Enum
+from strenum import StrEnum
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from typing import List
 from llama_index.core import Document,StorageContext,VectorStoreIndex
 from config import params
 
-class ChromeStoringMode(Enum):
-    LOCAL = 0,
-    DOCKER = 1
+class ChromeStoringMode(StrEnum):
+    LOCAL = "Local",
+    DOCKER = "Docker",
+    Ephemeral = "Ephemeral"
 
 class ChromaStoring():
     def __init__(self,storing_mode :ChromeStoringMode = ChromeStoringMode.LOCAL,collection_name : str = "chroma_collection",chroma_cache_dir : str = "chroma_vectorstore"):
@@ -20,13 +20,18 @@ class ChromaStoring():
         self.cache_dir = os.path.join(params.cache_folder,chroma_cache_dir)
 
         # Choose mode
+        # Local mode
         if self._storing_mode == ChromeStoringMode.LOCAL:
             self._database = chromadb.PersistentClient(path=self.cache_dir)
-        else:
+        # Docker mode
+        elif self._storing_mode == ChromeStoringMode.DOCKER:
             self._database = chromadb.HttpClient()
+        # Ephemeral mode
+        else:
+            self._database = chromadb.EphemeralClient()
 
         # Print
-        print("Start Chroma Vectorstore !")
+        print(f"Start Chroma Vectorstore with {self._storing_mode} Mode!")
 
 
     def build_index_from_docs(self,documents: List[Document], embedding_model = None):
@@ -42,8 +47,10 @@ class ChromaStoring():
             documents, storage_context=storage_context, embed_model=embedding_model
         )
 
-    def load_index_from_docs(self,embedding_model = None):
+    def load_index(self,embedding_model = None):
         if embedding_model is None: raise Exception("Please insert embedding model")
+        # Ephemeral case not supported!
+        if self._storing_mode == ChromeStoringMode.Ephemeral: raise Exception("Not supported Ephemeral Mode. This function only works for loading data from databaseti")
 
         # Check if local mode or Cloud mode
         if self._storing_mode == ChromeStoringMode.LOCAL:

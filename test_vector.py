@@ -22,9 +22,15 @@ docs = pipeline.run(documents=docs)
 # Convert nodes to docs
 docs = utils.convert_nodes_to_docs(docs)
 
-from ingestion_modules.custom_storing.chroma_storing import ChromaStoring
-chroma_storing = ChromaStoring()
-index = chroma_storing.load_index_from_docs(embedding_model=embedding_model)
+# Start Vector Store
+# from ingestion_modules.custom_storing.chroma_storing import ChromaStoring
+# chroma_storing = ChromaStoring()
+# index = chroma_storing.build_index_from_docs(documents=docs,embedding_model=embedding_model)
+
+from ingestion_modules.custom_storing.elastic_search_storing import ES_Storing
+es_storing = ES_Storing()
+index = es_storing.load_index(embedding_model=embedding_model)
+
 
 # Define large language model
 from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModelProvider
