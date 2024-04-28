@@ -5,6 +5,7 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 from typing import List
 from llama_index.core import Document,StorageContext,VectorStoreIndex
 from config import params
+# Local vector store
 
 class ChromeStoringMode(StrEnum):
     LOCAL = "Local",
@@ -36,6 +37,8 @@ class ChromaStoring():
 
     def build_index_from_docs(self,documents: List[Document], embedding_model = None):
         if embedding_model is None: raise Exception("Please insert embedding model")
+        assert isinstance(documents, list), "Please insert list of documents"
+        assert documents, "Data cannot be empty"
 
         # Build collection, vector store and storage context
         chroma_collection = self._database.get_or_create_collection(name=self.collection_name)

@@ -22,14 +22,36 @@ docs = pipeline.run(documents=docs)
 # Convert nodes to docs
 docs = utils.convert_nodes_to_docs(docs)
 
-# Start Vector Store
-# from ingestion_modules.custom_storing.chroma_storing import ChromaStoring
-# chroma_storing = ChromaStoring()
-# index = chroma_storing.build_index_from_docs(documents=docs,embedding_model=embedding_model)
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.vector_stores.upstash import UpstashVectorStore
+from llama_index.core import StorageContext
 
-from ingestion_modules.custom_storing.elastic_search_storing import ES_Storing
-es_storing = ES_Storing()
-index = es_storing.load_index(embedding_model=embedding_model)
+from llama_index.vector_stores.qdrant import QdrantVectorStore
+from qdrant_client import QdrantClient, AsyncQdrantClient
+import qdrant_client
+
+# creates a persistant index to disk
+client = qdrant_client.QdrantClient(
+    # you can use :memory: mode for fast and light-weight experiments,
+    # it does not require to have Qdrant deployed anywhere
+    # but requires qdrant-client >= 1.1.1
+    # location=":memory:"
+    # otherwise set Qdrant instance address with:
+    # url="http://:"
+    # otherwise set Qdrant instance with host and port:
+    host="localhost",
+    port=6333
+    # set API KEY for Qdrant Cloud
+    # api_key="",
+)
+vector_store = QdrantVectorStore(client=client, collection_name="paul_graham")
+
+storage_context = StorageContext.from_defaults(vector_store=vector_store)
+
+index = VectorStoreIndex.from_documents(
+    docs,
+    storage_context=storage_context,
+)
 
 
 # Define large language model
