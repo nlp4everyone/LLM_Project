@@ -53,7 +53,7 @@ supported_services = {
         "KEY": GRADIENT_KEY
     },
     "GROQ":{
-        "CHAT_MODELS":["llama2-70b-4096","mixtral-8x7b-32768","gemma-7b-it"],
+        "CHAT_MODELS":["llama2-70b-4096","mixtral-8x7b-32768","gemma-7b-it","llama3-8b-8192"],
         "EMBBEDDING_MODELS":[],
         "KEY": GROQ_KEY
     },
