@@ -10,3 +10,9 @@ ES_API_KEY = os.getenv("ES_API_KEY")
 # Upstash
 UPSTASH_URL = os.getenv("UPSTASH_URL")
 UPSTASH_TOKEN = os.getenv("UPSTASH_TOKEN")
+
+# Qdrant
+QDRANT_URL = os.getenv("QDRANT_URL")
+QDRANT_TOKEN = os.getenv("QDRANT_TOKEN")
+QDRANT_PORT = int(os.getenv("QDRANT_PORT"))
+QDRANT_COLLECTION = os.getenv("QDRANT_COLLECTION")
