@@ -8,3 +8,4 @@ services:
 
   main_stream:
     image: llamaindex-project
+    container_name: llamaindex-project

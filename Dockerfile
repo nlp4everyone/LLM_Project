@@ -6,5 +6,6 @@ COPY requirements.txt requirements.txt
 # Install requirement packages
 RUN pip install -r requirements.txt
 RUN pip install llama-index-embeddings-fastembed
+RUN pip install llama-index-vector-stores-elasticsearch
 COPY . .
 CMD python /app/test_vector.py

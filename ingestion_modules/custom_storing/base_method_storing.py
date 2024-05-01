@@ -12,10 +12,9 @@ class BaseMethodStoring():
         # Return vector store
         return self._vector_store
 
-    def build_index_from_docs(self, documents: List[Document], embedding_model=None):
+    def build_index_from_docs(self, documents: List[Document], embedding_model):
         # Check service
         if self._vector_store == None: raise Exception("Please set vector store")
-        if embedding_model == None: raise Exception("Insert embedding model")
 
         # Check input
         assert isinstance(documents, list), "Please insert list of documents"
@@ -26,10 +25,9 @@ class BaseMethodStoring():
         return VectorStoreIndex.from_documents(documents=documents, storage_context=storage_context,
                                                embed_model=embedding_model)
 
-    def load_index(self, embedding_model=None):
+    def load_index(self, embedding_model):
         # Check service
         if self._vector_store == None: raise Exception("Please set vector store")
-        if embedding_model == None: raise Exception("Insert embedding model")
 
         # Build storage context
         storage_context = StorageContext.from_defaults(vector_store=self._vector_store)
