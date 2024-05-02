@@ -24,6 +24,5 @@ llama-index-llms-openai
 llama-index-llms-gemini
 google-generativeai
 llama-index-vector-stores-elasticsearch
-transformers
 llama_index-llms-llama_api
 llama-index-llms-together

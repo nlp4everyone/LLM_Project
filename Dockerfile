@@ -6,5 +6,8 @@ COPY requirements.txt requirements.txt
 # Install requirement packages
 RUN pip install -r requirements.txt
 RUN pip install llama-index-embeddings-fastembed
+RUN pip install transformers -U
 COPY . .
-CMD python /app/insert_db.py
+
+# Run RAG
+CMD python /app/sample_rag.py

@@ -3,7 +3,7 @@ from llama_index.core import Document
 from typing import List
 from llama_index.core import StorageContext
 
-class BaseMethodStoring():
+class BaseMethodVectorStore():
     def __init__(self):
         # Set vector store
         self._vector_store = None

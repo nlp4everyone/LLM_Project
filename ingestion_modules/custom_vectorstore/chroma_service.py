@@ -12,7 +12,7 @@ class ChromaMode(StrEnum):
     DOCKER = "Docker",
     Ephemeral = "Ephemeral"
 
-class ChromaStoring():
+class ChromaService():
     def __init__(self,storing_mode :ChromaMode = ChromaMode.LOCAL,collection_name : str = "chroma_collection",chroma_cache_dir : str = "chroma_vectorstore"):
         # Define params
         self.collection_name = collection_name

@@ -5,6 +5,11 @@ from strenum import StrEnum
 from llama_index.embeddings.fastembed import FastEmbedEmbedding,base
 import os
 from ai_modules.embedding_modules.base_embedding import BaseEmbedding
+import logging
+
+# Creating an object
+logging.basicConfig(format='%(asctime)s [%(filename)s:%(lineno)d] %(message)s')
+logger = logging.getLogger()
 
 class OpenEmbeddingProvider(StrEnum):
     HuggingFace = "HuggingFace",
@@ -32,6 +37,9 @@ class OpenEmbedding(BaseEmbedding):
 
         # Check model name
         if self.model_name is not None: self._embedding_model.model_name = model_name
-        print(f"Initiate {service_name} with model: {self._embedding_model.model_name}, batch size {self.batch_size}")
+        init_message = f"Initiate {service_name} with model: {self._embedding_model.model_name}, batch size {self.batch_size}"
+        print("Hello")
+        print(init_message)
+        logger.info(init_message)
 
 

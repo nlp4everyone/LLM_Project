@@ -9,7 +9,7 @@ from config import params
 from typing import List
 cached_folder = params.cache_folder
 # Local vector store
-class SimpleStoring():
+class SimpleService():
     def __init__(self,simple_cached_dir : str = "simple_vectorstore",collection_name = "llama_index"):
         # Simple cached dir
         self.cached_path = os.path.join(cached_folder,simple_cached_dir)
