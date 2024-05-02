@@ -85,7 +85,7 @@ class Qdrant_Storing(BaseMethodStoring,QdrantClient):
         # Local host mode
         elif self._mode == QdrantMode.LOCALHOST:
             self._client = qdrant_client.QdrantClient(
-                host="192.168.1.80",
+                host="localhost",
                 port=QDRANT_PORT
             )
         elif self._mode == QdrantMode.CLOUD:
