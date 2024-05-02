@@ -85,7 +85,7 @@ class Qdrant_Storing(BaseMethodStoring,QdrantClient):
         # Local host mode
         elif self._mode == QdrantMode.LOCALHOST:
             self._client = qdrant_client.QdrantClient(
-                host="localhost",
+                host="192.168.1.80",
                 port=QDRANT_PORT
             )
         elif self._mode == QdrantMode.CLOUD:
@@ -95,12 +95,11 @@ class Qdrant_Storing(BaseMethodStoring,QdrantClient):
             )
         else:
             raise Exception("Wrong qdrant mode")
-
         # Set vector store
         self.set_vector_store()
 
     def set_vector_store(self):
         # Define vector store
-        self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
+        self._vector_store = QdrantVectorStore(client=self._client, collection_name="llama-project")
         # Print
         print(f"Start Qdrant Vectorstore!")

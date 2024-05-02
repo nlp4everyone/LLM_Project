@@ -5,6 +5,7 @@ from ingestion_modules import utils
 from ai_modules.embedding_modules.open_embedding import OpenEmbedding,OpenEmbeddingProvider
 from llama_index.core.ingestion import IngestionPipeline
 from ingestion_modules.custom_storing.simple_storing import SimpleStoring
+from ingestion_modules.custom_storing.service_storing import Qdrant_Storing,QdrantMode
 
 # Load data
 web_loader = CustomWebLoader(web_provider=WebProvider.TRAFILATURA)
@@ -26,8 +27,8 @@ nodes = pipeline.run(documents=docs)
 docs = utils.convert_nodes_to_docs(nodes)
 
 # Insert to db
-# qdrant_service = Qdrant_Storing(mode=QdrantMode.LOCALHOST)
-# index = qdrant_service.build_index_from_docs(documents=docs,embedding_model=embedding_model)
-simple_storing = SimpleStoring()
-simple_storing.build_index_from_docs(documents=docs,embedding_model=embedding_model)
+qdrant_service = Qdrant_Storing(mode=QdrantMode.LOCALHOST)
+index = qdrant_service.build_index_from_docs(documents=docs,embedding_model=embedding_model)
+#simple_storing = SimpleStoring()
+#simple_storing.build_index_from_docs(documents=docs,embedding_model=embedding_model)
 
