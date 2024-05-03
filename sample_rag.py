@@ -8,7 +8,7 @@ from ingestion_modules import utils
 import logging
 
 # Creating an object
-logging.basicConfig(format='%(asctime)s [%(filename)s:%(lineno)d] %(message)s')
+logging.basicConfig(format='%(asctime)s [%(filename)s:%(lineno)d] %(message)s',level=logging.INFO)
 logger = logging.getLogger()
 
 # Init embedding
@@ -54,6 +54,7 @@ def main():
     response = query_engine.query("Who is Neymar?")
     print("Response")
     print(response)
+    logger.info("Hello")
 
 
 if __name__ == "__main__":
