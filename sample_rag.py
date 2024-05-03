@@ -1,6 +1,7 @@
 from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModelProvider,ServiceChatModel
 from ingestion_modules.custom_vectorstore.qdrant_service import QdrantService,_QDRANT_COLLECTION
 from ai_modules.embedding_modules.open_embedding import OpenEmbedding,OpenEmbeddingProvider
+from ai_modules.embedding_modules.service_embedding import ServiceEmbedding
 from llama_index.core.ingestion import IngestionPipeline
 from ingestion_modules.custom_loader.custom_web_loader import CustomWebLoader,WebProvider
 from llama_index.core.text_splitter import SentenceSplitter
@@ -12,8 +13,10 @@ logging.basicConfig(format='%(asctime)s [%(filename)s:%(lineno)d] %(message)s',l
 logger = logging.getLogger()
 
 # Init embedding
-open_embedding = OpenEmbedding(service_name=OpenEmbeddingProvider.FastEmbed)
-embedding_model = open_embedding.get_embedding_model()
+# open_embedding = OpenEmbedding(service_name=OpenEmbeddingProvider.FastEmbed)
+# embedding_model = open_embedding.get_embedding_model()
+service_embedding = ServiceEmbedding(service_name="COHERE",model_name="embed-english-light-v3.0")
+embedding_model = service_embedding.get_embedding_model()
 
 # Init
 qdrant_service = QdrantService(mode="local")
@@ -46,7 +49,11 @@ def main():
     # When collection is not existed, create new collection
     if not qdrant_service.collection_exists(collection_name=_QDRANT_COLLECTION):
         insert_data()
-        logger.debug(f"Insert collection {_QDRANT_COLLECTION}")
+        print("Insert data")
+    # insertBoolean = True
+    # if insertBoolean:
+    #     insert_data()
+    #     print("Insert data")
 
     # Query Data
     index = qdrant_service.load_index(embedding_model=embedding_model)

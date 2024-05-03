@@ -2,7 +2,7 @@
 from config import params
 from typing import Optional
 from strenum import StrEnum
-from llama_index.embeddings.fastembed import FastEmbedEmbedding,base
+# from llama_index.embeddings.fastembed import FastEmbedEmbedding,base
 import os
 from ai_modules.embedding_modules.base_embedding import BaseEmbedding
 import logging
@@ -31,7 +31,8 @@ class OpenEmbedding(BaseEmbedding):
             raise Exception("HuggingFace temporally turned off")
         # Fast Embed
         elif service_name == OpenEmbeddingProvider.FastEmbed:
-            self._embedding_model = FastEmbedEmbedding(cache_dir=self._embedding_model_folder)
+            # self._embedding_model = FastEmbedEmbedding(cache_dir=self._embedding_model_folder)
+            raise Exception("FastEmbed temporally turned off")
         else:
             raise Exception(f"Service {service_name} is not supported!")
 

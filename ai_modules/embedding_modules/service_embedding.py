@@ -5,7 +5,7 @@ from llama_index.embeddings.together import TogetherEmbedding
 from llama_index.embeddings.cohere import CohereEmbedding
 from llama_index.embeddings.voyageai import VoyageEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
-from llama_index.embeddings.nomic import NomicEmbedding
+# from llama_index.embeddings.nomic import NomicEmbedding
 from ai_modules.embedding_modules.base_embedding import BaseEmbedding
 
 # Elastic Search Embedding: Notitfy
@@ -34,8 +34,10 @@ class ServiceEmbedding(BaseEmbedding):
             raise Exception("Mistral currently required charge")
         elif service_name == "COHERE":
             self._embedding_model = CohereEmbedding(cohere_api_key=self.api_key,input_type="search_query")
-        elif service_name == "NOMIC":
-            self._embedding_model = NomicEmbedding(api_key=self.api_key,embed_batch_size=self.batch_size)
+        # elif service_name == "NOMIC":
+        #     self._embedding_model = NomicEmbedding(api_key=self.api_key,embed_batch_size=self.batch_size)
         else:
             raise Exception(f"Service {service_name} is not supported!")
+        # Specify
+        self._embedding_model.model_name = self.model_name
 

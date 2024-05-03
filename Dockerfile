@@ -5,8 +5,8 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 # Install requirement packages
 RUN pip install -r requirements.txt
-RUN pip install llama-index-embeddings-fastembed
-RUN pip install transformers -U
+#RUN pip install llama-index-embeddings-fastembed==0.1.3
+#RUN pip install transformers -U
 COPY . .
 
 # Run RAG
