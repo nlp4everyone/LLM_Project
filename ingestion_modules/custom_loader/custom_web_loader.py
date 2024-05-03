@@ -1,4 +1,4 @@
-from llama_index.readers.web import TrafilaturaWebReader
+from llama_index.readers.web import TrafilaturaWebReader,AsyncWebPageReader,BeautifulSoupWebReader,SimpleWebPageReader
 import requests
 from bs4 import BeautifulSoup
 from typing import Union,List
@@ -20,17 +20,14 @@ class CustomWebLoader():
             # Trafilatura
             self._web_loader = TrafilaturaWebReader()
         elif self._web_provider == WebProvider.WEBPAGE:
-            pass
             # Base Web Loader
-            # self._web_loader = SimpleWebPageReader()
+            self._web_loader = SimpleWebPageReader()
         elif self._web_provider == WebProvider.ASYNCWEBPAGE:
-            pass
             # Async Web Loader
-            # self._web_loader = AsyncWebPageReader()
+            self._web_loader = AsyncWebPageReader()
         elif self._web_provider == WebProvider.BEAUTIFULSOUP:
-            pass
             # Async Web Loader
-            # self._web_loader = BeautifulSoupWebReader()
+            self._web_loader = BeautifulSoupWebReader()
         else:
             raise Exception(f"Service {self._web_provider} is not supported!")
 
