@@ -2,8 +2,8 @@ from ingestion_modules.custom_vectorstore.base_method_vectorstore import BaseMet
 from config import db_params
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
-from enum import Enum
 from typing import Literal
+from system_component.system_logging import Logger
 import qdrant_client
 
 # Define params
@@ -47,6 +47,7 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
                 api_key=self.qdrant_token
             )
         else:
+            Logger.exception("Wrong qdrant mode")
             raise Exception("Wrong qdrant mode")
         # Set vector store
         self.set_vector_store()
@@ -54,5 +55,5 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
     def set_vector_store(self):
         # Define vector store
         self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
-        # Print
-        print(f"Start Qdrant Vectorstore!")
+        # Logging status
+        Logger.info(f"Start Qdrant Vectorstore!")

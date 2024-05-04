@@ -5,6 +5,7 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 from typing import List
 from llama_index.core import Document,StorageContext,VectorStoreIndex
 from config import params
+from system_component.system_logging import Logger
 # Local vector store
 
 class ChromaMode(StrEnum):
@@ -31,8 +32,8 @@ class ChromaService():
         else:
             self._database = chromadb.EphemeralClient()
 
-        # Print
-        print(f"Start Chroma Vectorstore with {self._storing_mode} Mode!")
+        # Print status
+        Logger.info(f"Start Chroma Vectorstore with {self._storing_mode} Mode!")
 
 
     def build_index_from_docs(self,documents: List[Document], embedding_model):
@@ -51,7 +52,9 @@ class ChromaService():
 
     def load_index(self,embedding_model):
         # Ephemeral case not supported!
-        if self._storing_mode == ChromaMode.Ephemeral: raise Exception("Not supported Ephemeral Mode. This function only works for loading data from databaseti")
+        if self._storing_mode == ChromaMode.Ephemeral:
+            empheral_mode_msg = "Not supported Ephemeral Mode. This function only works for loading data from database"
+            raise Exception(empheral_mode_msg)
 
         # Check if local mode or Cloud mode
         if self._storing_mode == ChromaMode.LOCAL:

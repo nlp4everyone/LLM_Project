@@ -7,6 +7,7 @@ from llama_index.embeddings.voyageai import VoyageEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
 # from llama_index.embeddings.nomic import NomicEmbedding
 from ai_modules.embedding_modules.base_embedding import BaseEmbedding
+from system_component.system_logging import Logger
 
 # Elastic Search Embedding: Notitfy
 class ServiceEmbedding(BaseEmbedding):
@@ -31,13 +32,20 @@ class ServiceEmbedding(BaseEmbedding):
         elif service_name == "OPENAI":
             self._embedding_model = OpenAIEmbedding(api_key=self.api_key,embed_batch_size=self.batch_size)
         elif service_name == "MISTRAL":
-            raise Exception("Mistral currently required charge")
+            mistral_exception_msg = "Mistral currently required charge"
+            Logger.exception(mistral_exception_msg)
+            raise Exception(mistral_exception_msg)
         elif service_name == "COHERE":
             self._embedding_model = CohereEmbedding(cohere_api_key=self.api_key,input_type="search_query")
         # elif service_name == "NOMIC":
         #     self._embedding_model = NomicEmbedding(api_key=self.api_key,embed_batch_size=self.batch_size)
         else:
-            raise Exception(f"Service {service_name} is not supported!")
+            service_exception_msg = f"Service {service_name} is not supported!"
+            Logger.exception(service_exception_msg)
+            raise Exception(service_exception_msg)
         # Specify
         self._embedding_model.model_name = self.model_name
+
+        #Logging Info
+        Logger.info(f"Launch {service_name} service embedding!")
 

@@ -1,6 +1,7 @@
 from ingestion_modules.custom_vectorstore.base_method_vectorstore import BaseMethodVectorStore
 from config import db_params
 from llama_index.vector_stores.elasticsearch import ElasticsearchStore
+from system_component.system_logging import Logger
 
 # Elastic Search service
 ES_NAME = db_params.ES_NAME
@@ -21,5 +22,5 @@ class ElasticSearchService(BaseMethodVectorStore):
         # Define vector store
         self._vector_store = ElasticsearchStore(index_name=collection_name, es_cloud_id=es_cloud_id,
                                                 es_api_key=es_api_key)
-        # Print
-        print(f"Start Elastic Search Vectorstore!")
+        # Print status
+        Logger.info(f"Start Elastic Search Vectorstore!")

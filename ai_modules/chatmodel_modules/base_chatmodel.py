@@ -1,5 +1,6 @@
 from llama_index.core.llms import ChatMessage
 from typing import Optional
+from system_component.system_logging import Logger
 
 class BaseChatModel():
     def __init__(self,temperature: float = 0.8,max_tokens :int = 512):
@@ -26,7 +27,10 @@ class BaseChatModel():
     def chat(self,user_prompt:str,system_prompt: str = "",streaming:bool = False) :
         # Check state
         if self._chat_model == None:
-            raise Exception("Chat model cannot be None")
+            exception_message = "Chat model cannot be None"
+            # Print exception
+            Logger.exception(exception_message)
+            raise Exception(exception_message)
 
         # Get chat template
         chat_template = self._chat_template(system_prompt,user_prompt)
@@ -42,6 +46,9 @@ class BaseChatModel():
     async def achat(self, user_prompt: str, system_prompt: Optional[str] = "", streaming:bool = False):
         # Check state
         if self._chat_model == None:
+            exception_message = "Chat model cannot be None"
+            # Print exception
+            Logger.exception(exception_message)
             raise Exception("Chat model cannot be None")
 
         # Get chat template

@@ -6,11 +6,7 @@ from llama_index.core.ingestion import IngestionPipeline
 from ingestion_modules.custom_loader.custom_web_loader import CustomWebLoader,WebProvider
 from llama_index.core.text_splitter import SentenceSplitter
 from ingestion_modules import utils
-import logging
-
-# Creating an object
-logging.basicConfig(format='%(asctime)s [%(filename)s:%(lineno)d] %(message)s',level=logging.INFO)
-logger = logging.getLogger()
+from system_component.system_logging import Logger
 
 # Init embedding
 # open_embedding = OpenEmbedding(service_name=OpenEmbeddingProvider.FastEmbed)
@@ -59,9 +55,7 @@ def main():
     index = qdrant_service.load_index(embedding_model=embedding_model)
     query_engine = index.as_query_engine(llm=llm,verbose=True)
     response = query_engine.query("Who is Neymar?")
-    print("Response")
-    print(response)
-    logger.info("Hello")
+    Logger.info(f"Response: {response}")
 
 
 if __name__ == "__main__":

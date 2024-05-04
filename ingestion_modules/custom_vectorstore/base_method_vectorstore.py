@@ -2,6 +2,7 @@ from llama_index.core import VectorStoreIndex
 from llama_index.core import Document
 from typing import List
 from llama_index.core import StorageContext
+from system_component.system_logging import Logger
 
 class BaseMethodVectorStore():
     def __init__(self):
@@ -14,7 +15,9 @@ class BaseMethodVectorStore():
 
     def build_index_from_docs(self, documents: List[Document], embedding_model):
         # Check service
-        if self._vector_store == None: raise Exception("Please set vector store")
+        if self._vector_store == None:
+            Logger.exception("Please set vector store")
+            raise Exception("Please set vector store")
 
         # Check input
         assert isinstance(documents, list), "Please insert list of documents"
@@ -27,7 +30,9 @@ class BaseMethodVectorStore():
 
     def load_index(self, embedding_model):
         # Check service
-        if self._vector_store == None: raise Exception("Please set vector store")
+        if self._vector_store == None:
+            Logger.exception("Please set vector store")
+            raise Exception("Please set vector store")
 
         # Build storage context
         storage_context = StorageContext.from_defaults(vector_store=self._vector_store)

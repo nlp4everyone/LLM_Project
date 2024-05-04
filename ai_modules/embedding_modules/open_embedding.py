@@ -3,13 +3,9 @@ from config import params
 from typing import Optional
 from strenum import StrEnum
 # from llama_index.embeddings.fastembed import FastEmbedEmbedding,base
-import os
+from system_component.system_logging import Logger
 from ai_modules.embedding_modules.base_embedding import BaseEmbedding
-import logging
-
-# Creating an object
-logging.basicConfig(format='%(asctime)s [%(filename)s:%(lineno)d] %(message)s')
-logger = logging.getLogger()
+import os
 
 class OpenEmbeddingProvider(StrEnum):
     HuggingFace = "HuggingFace",
@@ -26,18 +22,26 @@ class OpenEmbedding(BaseEmbedding):
         # Create folder
         os.makedirs(embedding_model_folder,exist_ok=True)
 
+        service_unsupported_msg = "HuggingFace temporally turned off"
+        # Hugging Face
         if service_name == OpenEmbeddingProvider.HuggingFace:
             # self._embedding_model = HuggingFaceEmbedding(cache_folder=self._embedding_model_folder,embed_batch_size=self.batch_size)
-            raise Exception("HuggingFace temporally turned off")
+            Logger.exception(service_unsupported_msg)
+            raise Exception(service_unsupported_msg)
         # Fast Embed
         elif service_name == OpenEmbeddingProvider.FastEmbed:
-            # self._embedding_model = FastEmbedEmbedding(cache_dir=self._embedding_model_folder)
-            raise Exception("FastEmbed temporally turned off")
+            service_unsupported_msg = "FastEmbed temporally turned off"
+            Logger.exception(service_unsupported_msg)
+            raise Exception(service_unsupported_msg)
         else:
-            raise Exception(f"Service {service_name} is not supported!")
+            service_unsupported_msg = f"Service {service_name} is not supported!"
+            Logger.exception(service_unsupported_msg)
+            raise Exception(service_unsupported_msg)
 
         # Check model name
         if self.model_name is not None: self._embedding_model.model_name = model_name
+        # Logging status
         init_message = f"Initiate {service_name} with model: {self._embedding_model.model_name}, batch size {self.batch_size}"
+        Logger.info(init_message)
 
 

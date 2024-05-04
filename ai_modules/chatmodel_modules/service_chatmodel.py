@@ -11,6 +11,7 @@ from llama_index.llms.together import TogetherLLM
 from llama_index.llms.gemini import Gemini
 from strenum import StrEnum
 from ai_modules.chatmodel_modules.base_chatmodel import BaseChatModel
+from system_component.system_logging import Logger
 
 class ServiceChatModelProvider(StrEnum):
     ANTHROPIC = "ANTHROPIC",
@@ -30,7 +31,10 @@ class ServiceChatModel(BaseChatModel):
         # Service support
         self.list_services = list(supported_services.keys())
         # Check service available
-        if service_name not in self.list_services: raise Exception(f"Service {service_name} is not supported!")
+        if service_name not in self.list_services:
+            service_exception = f"Service {service_name} is not supported!"
+            Logger.exception(service_exception)
+            raise Exception(service_exception)
 
         # Define key
         self.api_key = supported_services[service_name]["KEY"]
@@ -60,4 +64,5 @@ class ServiceChatModel(BaseChatModel):
         else:
             raise Exception(f"Service {service_name} is not supported!")
 
-        print(f"Launch {service_name} with temperature {self.temperature}")
+        # Print message
+        Logger.info(f"Launch {service_name} Chat model with temperature {self.temperature}")

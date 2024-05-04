@@ -7,7 +7,9 @@ from llama_index.core import (
 )
 from config import params
 from typing import List
+from system_component.system_logging import Logger
 cached_folder = params.cache_folder
+
 # Local vector store
 class SimpleService():
     def __init__(self,simple_cached_dir : str = "simple_vectorstore",collection_name = "llama_index"):
@@ -26,7 +28,8 @@ class SimpleService():
         index.set_index_id(self.collection_name)
         # Save to storage
         index.storage_context.persist(self.cached_path)
-        print(f"Saved index to : {self.cached_path}")
+        # Logging
+        Logger.info(f"Saved index to : {self.cached_path}")
         return index
 
     def load_index(self,embedding_model):

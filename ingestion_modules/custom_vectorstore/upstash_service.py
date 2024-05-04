@@ -1,6 +1,8 @@
 from llama_index.vector_stores.upstash import UpstashVectorStore
 from ingestion_modules.custom_vectorstore.base_method_vectorstore import BaseMethodVectorStore
 from config import db_params
+from system_component.system_logging import Logger
+
 # Upstash service
 UPSTASH_URL = db_params.UPSTASH_URL
 UPSTASH_TOKEN = db_params.UPSTASH_TOKEN
@@ -18,5 +20,5 @@ class UpstashService(BaseMethodVectorStore):
 
         # Define vector store
         self._vector_store = UpstashVectorStore(url=upstash_url,token=upstash_token)
-        # Print
-        print(f"Start Uptash Vector Store!")
+        # Update status
+        Logger.info(f"Start Uptash Vector Store!")
