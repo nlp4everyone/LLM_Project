@@ -1,0 +1,1 @@
+docker compose -p rag_application up

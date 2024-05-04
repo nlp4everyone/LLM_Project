@@ -4,13 +4,12 @@ services:
   qdrant_database:
     container_name: qdrant
     image: qdrant/qdrant
+    build: .
+    volumes:
+      - /qdrant_data
     ports:
       - 6333:6333
-#    volumes:
-#      # Just specify a path and let the Engine create a volume
-#      - /container/qdrant
-#    volumes:
-#      - qdrant_volume: /var/lib/docker/qdrant
+
     deploy:
       resources:
         limits:
@@ -22,6 +21,7 @@ services:
     image: llamaindex-project
     container_name: llamaindex-project
     network_mode: host
+    build: .
     deploy:
       resources:
         limits:
@@ -30,6 +30,6 @@ services:
           memory: 300M
 #
 #
-#volumes:
-#  qdrant_volume:
+volumes:
+  qdrant_volume:
 
