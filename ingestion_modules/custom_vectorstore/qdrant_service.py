@@ -57,3 +57,10 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
         self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
         # Logging status
         Logger.info(f"Start Qdrant Vectorstore!")
+
+    def load_index(self, embedding_model):
+        if not self._client.collection_exists(self.collection_name):
+            raise Exception(f"Collection: {self.collection_name} isn't existed")
+        # Load normal
+        index = super().load_index(embedding_model=embedding_model)
+        return index
