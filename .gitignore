@@ -11,4 +11,5 @@ ai_modules/chatmodel_modules/__pycache__
 ingestion_modules/__pycache__/
 ingestion_modules/custom_vectorstore/__pycache__/
 ingestion_modules/custom_storing/__pycache__
+ingestion_modules/custom_docstore/__pycache__/
 system_component/__pycache__/

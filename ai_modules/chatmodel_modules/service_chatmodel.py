@@ -2,7 +2,7 @@ from config.params import *
 from typing import Union
 from llama_index.llms.cohere import Cohere
 from llama_index.llms.anthropic import Anthropic
-from llama_index.llms.gradient import GradientBaseModelLLM
+# from llama_index.llms.gradient import GradientBaseModelLLM
 from llama_index.llms.groq import Groq
 from llama_index.llms.llama_api import LlamaAPI
 from llama_index.llms.openai import OpenAI
@@ -48,7 +48,8 @@ class ServiceChatModel(BaseChatModel):
         elif service_name == "COHERE":
             self._chat_model = Cohere(api_key=self.api_key,max_tokens=self.max_tokens,temperature=self.temperature)
         elif service_name == "GRADIENT":
-            self._chat_model = GradientBaseModelLLM(max_tokens=400,access_token=self.api_key,workspace_id="e27efd0c-635f-4113-bee6-80fec5b3aacd_workspace")
+            raise Exception("Temporally not working")
+            # self._chat_model = GradientBaseModelLLM(max_tokens=400,access_token=self.api_key,workspace_id="e27efd0c-635f-4113-bee6-80fec5b3aacd_workspace")
         elif service_name == "GROQ":
             self._chat_model = Groq(model="llama3-8b-8192",api_key=self.api_key)
         elif service_name == "LLAMAAPI":

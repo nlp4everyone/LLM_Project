@@ -11,6 +11,7 @@ ES_API_KEY = db_params.ES_API_KEY
 class ElasticSearchService(BaseMethodVectorStore):
     def __init__(self):
         super().__init__()
+        raise Exception("Currently not working")
         self.set_vector_store()
 
     def set_vector_store(self,collection_name : str = ES_NAME, es_cloud_id : str = ES_CLOUD_ID , es_api_key : str = ES_API_KEY):
@@ -20,7 +21,8 @@ class ElasticSearchService(BaseMethodVectorStore):
         assert isinstance(es_api_key, str), "API Key must be a string"
 
         # Define vector store
-        self._vector_store = ElasticsearchStore(index_name=collection_name, es_cloud_id=es_cloud_id,
-                                                es_api_key=es_api_key)
+        self._vector_store = ElasticsearchStore(index_name=collection_name, es_cloud_id=es_cloud_id)
+        #                                         es_api_key=es_api_key)
+        # self._vector_store = ElasticsearchStore(es_url="http://localhost:9200",index_name="paul_graham")
         # Print status
         Logger.info(f"Start Elastic Search Vectorstore!")

@@ -7,6 +7,8 @@ from ingestion_modules.custom_loader.custom_web_loader import CustomWebLoader,We
 from llama_index.core.text_splitter import SentenceSplitter
 from ingestion_modules import utils
 from system_component.system_logging import Logger
+#from ingestion_modules.custom_vectorstore.elastic_search_service import ElasticSearchService
+from ingestion_modules.custom_docstore.mongo_service import MongoService
 
 # Init embedding
 # open_embedding = OpenEmbedding(service_name=OpenEmbeddingProvider.FastEmbed)
@@ -14,8 +16,10 @@ from system_component.system_logging import Logger
 service_embedding = ServiceEmbedding(service_name="COHERE",model_name="embed-english-light-v3.0")
 embedding_model = service_embedding.get_embedding_model()
 
-# Init
-qdrant_service = QdrantService(mode="local")
+# Init vector stor service
+# qdrant_service = QdrantService(mode="local")
+# es_service = ElasticSearchService()
+mongo_service = MongoService()
 
 # Define large language model
 service_provider = ServiceChatModel()
@@ -23,6 +27,7 @@ llm = service_provider.get_chat_model()
 
 # Web url for crawling
 web_url = "https://en.wikipedia.org/wiki/Neymar"
+
 
 def insert_data(url=web_url):
     # Load data
@@ -39,20 +44,28 @@ def insert_data(url=web_url):
 
     # Convert nodes to docs
     docs = utils.convert_nodes_to_docs(nodes)
-    index = qdrant_service.build_index_from_docs(documents=docs, embedding_model=embedding_model)
+
+    # Build index
+    index = mongo_service.build_index_from_nodes(nodes=nodes,embedding_model=embedding_model)
+    # index = qdrant_service.build_index_from_docs(documents=docs, embedding_model=embedding_model)
+    # es_service.build_index_from_docs(documents=docs,embedding_model=embedding_model)
+    return index
 
 def main():
     # When collection is not existed, create new collection
-    if not qdrant_service.collection_exists(collection_name=_QDRANT_COLLECTION):
-        insert_data()
-        print("Insert data")
+    index = insert_data()
+    # if not qdrant_service.collection_exists(collection_name=_QDRANT_COLLECTION):
+    #     insert_data()
+    #     print("Insert data")
     # insertBoolean = True
     # if insertBoolean:
     #     insert_data()
     #     print("Insert data")
 
     # Query Data
-    index = qdrant_service.load_index(embedding_model=embedding_model)
+    # index = qdrant_service.load_index(embedding_model=embedding_model)
+    # index = es_service.load_index(embedding_model=embedding_model)
+    # index = mongo_service.load_index(embedding_model=embedding_model)
     query_engine = index.as_query_engine(llm=llm,verbose=True)
     response = query_engine.query("Who is Neymar?")
     Logger.info(f"Response: {response}")
