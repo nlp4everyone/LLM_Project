@@ -54,9 +54,13 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
 
     def set_vector_store(self):
         # Define vector store
-        self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
-        # Logging status
-        Logger.info(f"Start Qdrant Vectorstore!")
+        try:
+            self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
+            # Logging status
+            Logger.info(f"Start Qdrant Vectorstore!")
+        except:
+            Logger.exception("Connection Refused")
+            raise Exception("Connection Refused")
 
     def load_index(self, embedding_model):
         if not self._client.collection_exists(self.collection_name):

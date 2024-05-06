@@ -7,6 +7,7 @@ from ingestion_modules.custom_loader.custom_web_loader import CustomWebLoader,We
 from llama_index.core.text_splitter import SentenceSplitter
 from ingestion_modules import utils
 from system_component.system_logging import Logger
+from ai_modules.query_modules.custom_query_engine import BaseQueryEngine
 
 # Init embedding
 # open_embedding = OpenEmbedding(service_name=OpenEmbeddingProvider.FastEmbed)
@@ -61,9 +62,25 @@ def main():
     index = qdrant_service.load_index(embedding_model=embedding_model)
     # index = es_service.load_index(embedding_model=embedding_model)
     # index = mongo_service.load_index(embedding_model=embedding_model)
-    query_engine = index.as_query_engine(llm=llm,verbose=True)
+    # query_engine = index.as_query_engine(llm=llm,verbose=True)
+    # response = query_engine.query("Who is Neymar?")
+    # print("Response")
+    # print(response)
+
+    # Define query engine
+    query_engine = BaseQueryEngine(index=index,chat_model=llm)
+    # Print response
     response = query_engine.query("Who is Neymar?")
-    Logger.info(f"Response: {response}")
+    print("Response")
+    print(response)
+    # Logger.info(f"Response: {response}")
+
+    # Print retrieval
+    retrieval_docs,_ = query_engine.retrieve(query="Who is Neymar?")
+    # Logger.info(f" ")
+    # Logger.info(retrieval_docs)
+    print("Retrival doc:")
+    print(_)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ from llama_index.core.ingestion import IngestionPipeline
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core import Document
 from config import params
-from ai_modules.retrieval_modules import local_models
+from ai_modules.query_modules import local_models
 
 # Define variables
 embedding_cache_folder = os.path.join(params.cache_folder,"embedding_cache")

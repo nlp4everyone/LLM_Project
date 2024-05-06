@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  mongo_database:
+    container_name: mongo
+    image: mongodb/mongodb-community-server
+    build: .
+    volumes:
+      - /mongo_data
+    ports:
+      - 27017:27017
+
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+        reservations:
+          memory: 300M
+
+  main_stream:
+    image: llamaindex-project
+    container_name: llamaindex-project
+    network_mode: host
+    build: .
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+        reservations:
+          memory: 300M
+#
+#
+volumes:
+  qdrant_volume:
+
