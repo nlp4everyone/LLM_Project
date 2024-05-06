@@ -2,6 +2,7 @@
 .env
 cache_folder
 data
+__pycache__/
 ai_modules/llm_modules/__pycache__
 ai_modules/embedding_modules/__pycache__
 ai_modules/query_modules/__pycache__/

@@ -13,7 +13,7 @@ class BaseMethodVectorStore():
         # Return vector store
         return self._vector_store
 
-    def build_index_from_docs(self, documents: List[Document], embedding_model):
+    def build_index_from_docs(self,documents: List[Document], embedding_model):
         # Check service
         if self._vector_store == None:
             Logger.exception("Please set vector store")
@@ -25,6 +25,8 @@ class BaseMethodVectorStore():
 
         # Build storage context
         storage_context = StorageContext.from_defaults(vector_store=self._vector_store)
+        # Update state
+        Logger.info("Building index ...")
         return VectorStoreIndex.from_documents(documents=documents, storage_context=storage_context,
                                                embed_model=embedding_model)
 
@@ -36,5 +38,6 @@ class BaseMethodVectorStore():
 
         # Build storage context
         storage_context = StorageContext.from_defaults(vector_store=self._vector_store)
+        Logger.info("Loading index ...")
         return VectorStoreIndex.from_vector_store(vector_store=self._vector_store, storage_context=storage_context,
                                                   embed_model=embedding_model)

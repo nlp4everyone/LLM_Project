@@ -11,8 +11,8 @@ ES_API_KEY = db_params.ES_API_KEY
 class ElasticSearchService(BaseMethodVectorStore):
     def __init__(self):
         super().__init__()
-        raise Exception("Currently not working")
         self.set_vector_store()
+        raise Exception("Currently not working")
 
     def set_vector_store(self,collection_name : str = ES_NAME, es_cloud_id : str = ES_CLOUD_ID , es_api_key : str = ES_API_KEY):
         # Check type
