@@ -47,5 +47,6 @@ class PDFReader():
                 raise Exception("File is not existed!")
         # Return value
         data = await self._reader.aload_data(file_path)
+        print(data[0].text)
         return data
 
