@@ -1,5 +1,5 @@
 from llama_index.core.ingestion import IngestionPipeline
-from ingestion_modules.custom_loader.custom_web_loader import CustomWebLoader,WebProvider
+from ingestion_modules.loader.web_loader import CustomWebLoader,WebProvider
 from llama_index.core.text_splitter import SentenceSplitter
 from ingestion_modules import utils
 from ai_modules.embedding_modules.open_embedding import OpenEmbedding,OpenEmbeddingProvider

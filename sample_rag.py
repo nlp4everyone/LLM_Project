@@ -8,7 +8,7 @@ qdrant_service = data_ingestion.qdrant_service
 llm = data_ingestion.llm
 embedding_model = data_ingestion.embedding_model
 
-def query_data(question: str):
+def querying_step(question: str):
     assert question, "Question cant be empty"
     # Query Data
     index = qdrant_service.load_index(embedding_model=embedding_model)
@@ -29,7 +29,7 @@ def main():
 
     # Find answer
     question = "Who is Neymar?"
-    response = query_data(question)
+    response = querying_step(question)
     Logger.info(response)
 
 if __name__ == "__main__":
