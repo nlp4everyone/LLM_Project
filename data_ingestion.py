@@ -72,8 +72,8 @@ def insert_all_to_database(url:str =web_url,pipeline = pipeline):
     # Build index
     index = qdrant_service.build_index_from_docs(documents=docs, embedding_model=embedding_model,mode="override")
 
-# Inspecting time indexing
-beginTime = time.time()
-insert_all_to_database(url=web_url)
-endTime = time.time() - beginTime
-Logger.info(f"Indexing time {round(endTime,2)}s")
+# # Inspecting time indexing
+# beginTime = time.time()
+# insert_all_to_database(url=web_url)
+# endTime = time.time() - beginTime
+# Logger.info(f"Indexing time {round(endTime,2)}s")

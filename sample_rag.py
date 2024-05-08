@@ -1,11 +1,15 @@
 from ingestion_modules.custom_vectorstore.qdrant_service import QdrantService,_QDRANT_COLLECTION
 from system_component.system_logging import Logger
 from ai_modules.query_modules.custom_query_engine import BaseQueryEngine
+from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModelProvider,ServiceChatModel
 import data_ingestion
+
+# Define large language model
+service_provider = ServiceChatModel()
+llm = service_provider.get_chat_model()
 
 # Reference service
 qdrant_service = data_ingestion.qdrant_service
-llm = data_ingestion.llm
 embedding_model = data_ingestion.embedding_model
 
 def querying_step(question: str):
@@ -25,12 +29,12 @@ def querying_step(question: str):
 def main():
     # When collection is not existed, create new collection
     if not qdrant_service.collection_exists(collection_name=_QDRANT_COLLECTION):
-        data_ingestion.insert()
+        data_ingestion.insert_all_to_database()
 
     # Find answer
     question = "Who is Neymar?"
     response = querying_step(question)
     Logger.info(response)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

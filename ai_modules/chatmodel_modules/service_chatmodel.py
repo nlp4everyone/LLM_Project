@@ -25,7 +25,7 @@ class ServiceChatModelProvider(StrEnum):
     GEMINI = "GEMINI"
 
 class ServiceChatModel(BaseChatModel):
-    def __init__(self,model_name: Union[str,None] = None,service_name: ServiceChatModelProvider = ServiceChatModelProvider.GEMINI,temperature: float = 0.8,max_tokens :int = 512):
+    def __init__(self,model_name: Union[str,None] = None,service_name: Union[ServiceChatModelProvider,str] = ServiceChatModelProvider.GEMINI,temperature: float = 0.8,max_tokens :int = 512):
         super().__init__(temperature = temperature,max_tokens = max_tokens)
 
         # Service support

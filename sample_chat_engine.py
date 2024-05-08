@@ -1,11 +1,11 @@
-from ingestion_modules.custom_vectorstore.qdrant_service import QdrantService,_QDRANT_COLLECTION
-from system_component.system_logging import Logger
-from ai_modules.query_modules.custom_query_engine import BaseQueryEngine
+from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModelProvider,ServiceChatModel
 import data_ingestion
 
+# Define large language model
+service_provider = ServiceChatModel()
+llm = service_provider.get_chat_model()
 # Reference service
 qdrant_service = data_ingestion.qdrant_service
-llm = data_ingestion.llm
 embedding_model = data_ingestion.embedding_model
 
 def chat_response(question: str):
