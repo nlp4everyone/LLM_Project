@@ -7,7 +7,7 @@ ai_modules/llm_modules/__pycache__
 ai_modules/embedding_modules/__pycache__
 ai_modules/query_modules/__pycache__/
 config/__pycache__
-ingestion_modules/loader/__pycache__
+ingestion_modules/custom_loader/__pycache__
 ingestion_modules/text_splitter/__pycache__/
 ai_modules/chatmodel_modules/__pycache__
 ingestion_modules/__pycache__/

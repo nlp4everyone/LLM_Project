@@ -2,8 +2,9 @@ from ingestion_modules.custom_vectorstore.base_method_vectorstore import BaseMet
 from config import db_params
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
-from typing import Literal
+from typing import Literal,List
 from system_component.system_logging import Logger
+from llama_index.core import Document
 import qdrant_client
 
 # Define params
@@ -51,11 +52,11 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
         # Set vector store
         self.set_vector_store()
 
+
     def set_vector_store(self,collection_name: str = _QDRANT_COLLECTION):
         # Validating
         assert collection_name, "Collection name cant be empty"
         self.collection_name = collection_name
-
         # Define vector store
         try:
             # Logging status
@@ -65,6 +66,18 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
         except:
             Logger.exception("Connection Refused")
             raise Exception("Connection Refused")
+
+    def build_index_from_docs(self,documents: List[Document], embedding_model, mode: Literal["insert", "override"] = "insert"):
+        # When recreate collection available
+        if mode == "override":
+            # Check if collection existed, delete it
+            if self.collection_exists(self.collection_name): self.delete_collection(self.collection_name)
+
+        # Set vector store again
+        self.set_vector_store()
+        # Apply abstraction
+        super().build_index_from_docs(documents=documents,embedding_model=embedding_model)
+
 
     def load_index(self, embedding_model):
         assert self.collection_name, "Collection cant be None"

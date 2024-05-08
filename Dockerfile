@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.9-slim
 # Set working directory
 WORKDIR /app
 # Copy all files to working directory
@@ -11,3 +11,4 @@ COPY . .
 
 # Run RAG
 CMD python /app/sample_rag.py
+# CMD python /app/data_ingestion.py
