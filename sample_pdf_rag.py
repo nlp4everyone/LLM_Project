@@ -1,12 +1,12 @@
 from ingestion_modules.custom_vectorstore.qdrant_service import QdrantService,_QDRANT_COLLECTION
 from system_component.system_logging import Logger
 from ai_modules.query_modules.custom_query_engine import BaseQueryEngine
-import data_ingestion
+import data_ingestion_pdf
 
 # Reference service
-qdrant_service = data_ingestion.qdrant_service
-llm = data_ingestion.llm
-embedding_model = data_ingestion.embedding_model
+qdrant_service = data_ingestion_pdf.qdrant_service
+llm = data_ingestion_pdf.llm
+embedding_model = data_ingestion_pdf.embedding_model
 
 def querying_step(question: str):
     assert question, "Question cant be empty"
@@ -25,12 +25,15 @@ def querying_step(question: str):
 def main():
     # When collection is not existed, create new collection
     if not qdrant_service.collection_exists(collection_name=_QDRANT_COLLECTION):
-        data_ingestion.insert()
+        data_ingestion_pdf.insert()
 
     # Find answer
-    question = "Who is Neymar?"
+    question = "What is title of Article 2"
     response = querying_step(question)
+    print("\n\n\n\n")
+    print(response)
     Logger.info(response)
+    print("\n\n\n\n")
 
 if __name__ == "__main__":
     main()
