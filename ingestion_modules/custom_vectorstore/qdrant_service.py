@@ -8,20 +8,24 @@ import qdrant_client
 
 # Define params
 # Qdrant service
+_QDRANT_MODE = db_params.QDRANT_MODE
 _QDRANT_TOKEN = db_params.QDRANT_TOKEN
 _QDRANT_URL = db_params.QDRANT_URL
 _QDRANT_PORT = db_params.QDRANT_PORT
 _QDRANT_COLLECTION = db_params.QDRANT_COLLECTION
 
 
-class QdrantService(BaseMethodVectorStore,QdrantClient):
-    def __init__(self,mode : Literal["memory","local","cloud"] = "local", qdrant_token : str = _QDRANT_TOKEN , qdrant_url : str = _QDRANT_URL):
+class QdrantService(BaseMethodVectorStore, QdrantClient):
+    def __init__(self, collection_name: str = None, mode : Literal["memory","local","cloud"] = _QDRANT_MODE, qdrant_token : str = _QDRANT_TOKEN , 
+                 qdrant_url : str = _QDRANT_URL):
         super().__init__()
         # Init params
+        self._mode = mode if mode else "local"
         self.qdrant_token = qdrant_token
         self.qdrant_url = qdrant_url
-        self._mode = mode
-        self.collection_name = ""
+
+        # collection_name is passed in fastapi. If not call api, take collection_name from env
+        self.collection_name = collection_name if collection_name else _QDRANT_COLLECTION
 
         # Check type
         assert isinstance(qdrant_token, str), "Cloud id must be a string"
@@ -51,11 +55,10 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
         # Set vector store
         self.set_vector_store()
 
-    def set_vector_store(self,collection_name: str = _QDRANT_COLLECTION):
+    def set_vector_store(self):
         # Validating
-        assert collection_name, "Collection name cant be empty"
-        self.collection_name = collection_name
-
+        assert self.collection_name, "Collection name cant be empty"
+        
         # Define vector store
         try:
             # Logging status
