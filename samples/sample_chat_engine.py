@@ -1,4 +1,4 @@
-from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModelProvider,ServiceChatModel
+from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModel
 import data_ingestion
 
 # Define large language model
