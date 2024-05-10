@@ -1,10 +1,10 @@
 from typing import Literal,Optional
 from config.params import *
 from ai_modules.embedding_modules.open_embedding import OpenEmbeddingProvider
-from llama_index.embeddings.together import TogetherEmbedding
+# from llama_index.embeddings.together import TogetherEmbedding
 from llama_index.embeddings.cohere import CohereEmbedding
-from llama_index.embeddings.voyageai import VoyageEmbedding
-from llama_index.embeddings.openai import OpenAIEmbedding
+# from llama_index.embeddings.voyageai import VoyageEmbedding
+# from llama_index.embeddings.openai import OpenAIEmbedding
 # from llama_index.embeddings.nomic import NomicEmbedding
 from ai_modules.embedding_modules.base_embedding import BaseEmbedding
 from system_component.system_logging import Logger
