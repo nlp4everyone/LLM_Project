@@ -9,12 +9,12 @@ ES_CLOUD_ID = db_params.ES_CLOUD_ID
 ES_API_KEY = db_params.ES_API_KEY
 
 class ElasticSearchService(BaseMethodVectorStore):
-    def __init__(self):
+    def __init__(self,collection_name : str = ES_NAME, es_cloud_id : str = ES_CLOUD_ID , es_api_key : str = ES_API_KEY):
         super().__init__()
-        self.set_vector_store()
+        self._set_vector_store(collection_name=collection_name,es_cloud_id=es_cloud_id,es_api_key=es_api_key)
         raise Exception("Currently not working")
 
-    def set_vector_store(self,collection_name : str = ES_NAME, es_cloud_id : str = ES_CLOUD_ID , es_api_key : str = ES_API_KEY):
+    def _set_vector_store(self,collection_name : str = ES_NAME, es_cloud_id : str = ES_CLOUD_ID , es_api_key : str = ES_API_KEY):
         # Check type
         assert isinstance(collection_name, str), "Collection name must be a string"
         assert isinstance(es_cloud_id, str), "Cloud id must be a string"

@@ -16,13 +16,13 @@ _QDRANT_COLLECTION = db_params.QDRANT_COLLECTION
 
 
 class QdrantService(BaseMethodVectorStore,QdrantClient):
-    def __init__(self,mode : Literal["memory","local","cloud"] = "local", qdrant_token : str = _QDRANT_TOKEN , qdrant_url : str = _QDRANT_URL):
+    def __init__(self,mode : Literal["memory","local","cloud"] = "local", qdrant_token : str = _QDRANT_TOKEN , qdrant_url : str = _QDRANT_URL,collection_name: str = _QDRANT_COLLECTION):
         super().__init__()
         # Init params
         self.qdrant_token = qdrant_token
         self.qdrant_url = qdrant_url
         self._mode = mode
-        self.collection_name = ""
+        self.collection_name = collection_name
 
         # Check type
         assert isinstance(qdrant_token, str), "Cloud id must be a string"
@@ -49,14 +49,14 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
         else:
             Logger.exception("Wrong qdrant mode")
             raise Exception("Wrong qdrant mode")
+
         # Set vector store
-        self.set_vector_store()
+        self._set_vector_store()
 
 
-    def set_vector_store(self,collection_name: str = _QDRANT_COLLECTION):
+    def _set_vector_store(self):
         # Validating
-        assert collection_name, "Collection name cant be empty"
-        self.collection_name = collection_name
+        assert self.collection_name, "Collection name cant be empty"
         # Define vector store
         try:
             # Logging status
@@ -74,7 +74,7 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
             if self.collection_exists(self.collection_name): self.delete_collection(self.collection_name)
 
         # Set vector store again
-        self.set_vector_store()
+        self._set_vector_store()
         # Apply abstraction
         super().build_index_from_docs(documents=documents,embedding_model=embedding_model)
 
