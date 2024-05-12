@@ -9,7 +9,6 @@ default_postprocessors = [
     # SimilarityPostprocessor(similarity_cutoff=0.7)
 ]
 
-
 class BaseQueryEngine():
     def __init__(self,index, chat_model, similarity_top_k=3):
         assert chat_model, "Chat model cant be empty"

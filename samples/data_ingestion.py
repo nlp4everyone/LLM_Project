@@ -1,12 +1,12 @@
-import os,time
+import os
 from llama_index.core.ingestion import IngestionPipeline
-from ingestion_modules.custom_loader import web_loader,pdf_loader
+from ingestion_modules.custom_loader import CustomWebLoader,CustomPDFReader,WebProvider
 from llama_index.core.text_splitter import SentenceSplitter
 from ingestion_modules import utils
-from ai_modules.embedding_modules.open_embedding import OpenEmbedding,OpenEmbeddingProvider
-# from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModelProvider,ServiceChatModel
-from ai_modules.embedding_modules.service_embedding import ServiceEmbedding
-from ingestion_modules.custom_vectorstore.qdrant_service import QdrantService,_QDRANT_COLLECTION
+from ai_modules.embedding_modules import OpenEmbedding,OpenEmbeddingProvider
+# from ai_modules.chatmodel_modules import ServiceChatModelProvider,ServiceChatModel
+from ai_modules.embedding_modules import ServiceEmbedding
+from ingestion_modules.custom_vectorstore import QdrantService,_QDRANT_COLLECTION
 from system_component.system_logging import Logger
 
 # Init embedding
@@ -44,14 +44,14 @@ def load_documents(url:str):
         ext = os.path.splitext(url)[1]
         # If extension is PDF
         if str(ext).lower() == ".pdf":
-            loader = pdf_loader.PDFReader(pdf_provider="LlamaParse")
+            loader = CustomPDFReader(pdf_provider="LlamaParse")
             docs = loader.load_data(file_path=url)
         else:
             raise Exception(f"File format {ext} is not supported!")
     # When url is a link
     else:
         try:
-            loader = web_loader.CustomWebLoader(web_provider=web_loader.WebProvider.TRAFILATURA)
+            loader = CustomWebLoader(web_provider=WebProvider.TRAFILATURA)
             docs = loader.load_data(url)
         except Exception as e:
             print(e)

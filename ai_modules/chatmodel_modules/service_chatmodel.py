@@ -10,8 +10,8 @@ from llama_index.llms.perplexity import Perplexity
 from llama_index.llms.together import TogetherLLM
 from llama_index.llms.gemini import Gemini
 from strenum import StrEnum
-from ai_modules.chatmodel_modules.base_chatmodel import BaseChatModel
-from system_component.system_logging import Logger
+from ai_modules.chatmodel_modules import BaseChatModel
+from system_component import Logger
 
 class ServiceChatModelProvider(StrEnum):
     ANTHROPIC = "ANTHROPIC",

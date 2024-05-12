@@ -1,7 +1,6 @@
 import streamlit as st
 from config import params
 import os,json
-from samples import sample_rag
 from typing import List,Union
 from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModel
 
@@ -24,12 +23,20 @@ def save_state(data:dict,path = state_path):
         json.dump(data,f)
 
 def load_current_state(path = state_path):
+    if not os.path.exists(path):
+        return {
+            "chat_model_provider":"",
+            "chat_model":"",
+            "embedding_provider":"",
+            "embedding_model":"",
+            "temperature":"",
+            "max_tokens":""
+        }
     # Save file
     with open(path, 'r') as f:
-        state = json.load(f)
-    return state
+        return json.load(f)
 
-def set_state(current_state):
+def set_params_state(current_state):
     st.session_state["chat_model_provider"] = current_state["chat_model_provider"]
     st.session_state["chat_model"] = current_state["chat_model"]
     st.session_state["embedding_provider"] = current_state["embedding_provider"]
@@ -58,15 +65,18 @@ def main_layout():
 
     # Load state
     current_state = load_current_state()
+    # Set state
+    set_params_state(current_state)
 
     # Initialize chat history
     if "messages" not in st.session_state:
-        st.session_state.messages = []
+        st.session_state["messages"] = []
 
     # Display chat messages from history on app rerun
-    for message in st.session_state.messages:
+    for message in st.session_state["messages"]:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
+
 
     st.title("RAG Baseline")
     with st.sidebar:
@@ -76,8 +86,6 @@ def main_layout():
         # Provide chat model provider
         chat_provider_index = find_index(current_state["chat_model_provider"],chat_providers) if os.path.exists(state_path) else 0
         selected_chat_provider = st.selectbox("Choose chat model provider:",chat_providers,index=chat_provider_index)
-        if not isinstance(selected_chat_provider,str) or len(selected_chat_provider) ==0:
-            raise Exception("Selected Provider is not string")
 
         # Provide chat model
         list_chat_models = supported_service[selected_chat_provider.upper()]["CHAT_MODELS"]
@@ -109,35 +117,25 @@ def main_layout():
         pressed_button = st.button("Apply")
         if pressed_button:
             st.success("Saved params")
-            st.session_state["chat_model_provider"] = selected_chat_provider
-            st.session_state["chat_model"] = selected_chat_model
-            st.session_state["embedding_provider"] = selected_embedding_provider
-            st.session_state["embedding_model"] = selected_embedding_model
-            st.session_state["temperature"] = temperature
-            st.session_state["max_tokens"] = max_tokens
-
+            current_state["chat_model_provider"] = selected_chat_provider
+            current_state["chat_model"] = selected_chat_model
+            current_state["embedding_provider"] = selected_embedding_provider
+            current_state["embedding_model"] = selected_embedding_model
+            current_state["temperature"] = temperature
+            current_state["max_tokens"] = max_tokens
+            # Set state
+            set_params_state(current_state)
             # Save state
             save_state(data=st.session_state.to_dict())
 
     # Chat flow
-    input = st.chat_input("Hello")
-    # Define params
-    chat_model_provider = current_state["chat_model_provider"]
-    chat_model_name = current_state["chat_model"]
-    temperature = current_state["temperature"]
-    max_tokens = current_state["max_tokens"]
-
-    # Get model
-    set_state(current_state)
-    # chat_model = load_chat_model(chat_model_provider=chat_model_provider,chat_model=chat_model_name,temperature=temperature)
-    # sample_rag.querying_step()
     if prompt := st.chat_input("What is up?"):
         # Display user message in chat message container
         with st.chat_message("user"):
             st.markdown(prompt)
         # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        print(st.session_state.messages)
+        st.session_state["messages"].append({"role": "user", "content": prompt})
+        print(st.session_state["messages"])
 
 if __name__ == "__main__":
     main_layout()

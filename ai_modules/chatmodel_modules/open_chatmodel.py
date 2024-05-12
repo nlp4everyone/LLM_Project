@@ -1,6 +1,6 @@
 from llama_index.llms.ollama import Ollama
 from typing import Union
-from ai_modules.chatmodel_modules.base_chatmodel import BaseChatModel
+from ai_modules.chatmodel_modules import BaseChatModel
 from system_component.system_logging import Logger
 
 class OpenChatModel(BaseChatModel):
