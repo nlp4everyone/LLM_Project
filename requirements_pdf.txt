@@ -1,0 +1,15 @@
+llama_index==0.10.34
+llama_parse==0.4.2
+python-dotenv==1.0.1
+qdrant_client==1.9.0
+Requests==2.31.0
+semantic_text_splitter==0.12.3
+strenum==0.4.15
+tokenizers==0.19.1
+llama-index-readers-file
+llama-index-vector-stores-qdrant
+llama-index-llms-cohere
+google-generativeai
+llama-index-embeddings-cohere
+PyMuPDF
+frontend
