@@ -2,7 +2,7 @@ import sys
 import os
 current_path = os.getcwd()
 sys.path.append(current_path)
-from ingestion_modules.custom_loader.custom_pdf_loader import PDFReader
+from ingestion_modules.custom_loader.pdf_loader import PDFReader
 from ingestion_modules.custom_vectorstore.qdrant_service import QdrantService
 from ai_modules.embedding_modules.service_embedding import ServiceEmbedding # Change to custom
 from llama_index.core.ingestion import IngestionPipeline    # Change to custom

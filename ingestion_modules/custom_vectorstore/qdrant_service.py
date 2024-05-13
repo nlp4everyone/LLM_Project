@@ -9,6 +9,7 @@ import qdrant_client
 
 # Define params
 # Qdrant service
+_QDRANT_MODE = db_params.QDRANT_MODE
 _QDRANT_TOKEN = db_params.QDRANT_TOKEN
 _QDRANT_URL = db_params.QDRANT_URL
 _QDRANT_PORT = db_params.QDRANT_PORT
@@ -18,15 +19,17 @@ _QDRANT_COLLECTION = db_params.QDRANT_COLLECTION
 #https://github.com/qdrant/fastembed\
 #https://qdrant.tech/documentation/concepts/
 
-class QdrantService(BaseMethodVectorStore,QdrantClient):
-
-    def __init__(self,mode : Literal["memory","local","cloud"] = "local",collection_name: str = _QDRANT_COLLECTION, qdrant_token : str = _QDRANT_TOKEN , qdrant_url : str = _QDRANT_URL):
+class QdrantService(BaseMethodVectorStore, QdrantClient):
+    def __init__(self, collection_name: str = None, mode : Literal["memory","local","cloud"] = _QDRANT_MODE, qdrant_token : str = _QDRANT_TOKEN , 
+                 qdrant_url : str = _QDRANT_URL):
         super().__init__()
         # Init params
+        self._mode = mode if mode else "local"
         self.qdrant_token = qdrant_token
         self.qdrant_url = qdrant_url
-        self._mode = mode
-        self.collection_name = collection_name
+
+        # collection_name is passed in fastapi. If not call api, take collection_name from env
+        self.collection_name = collection_name if collection_name else _QDRANT_COLLECTION
 
         # Check type
         assert isinstance(qdrant_token, str), "Cloud id must be a string"
@@ -59,13 +62,16 @@ class QdrantService(BaseMethodVectorStore,QdrantClient):
         # Log state
         Logger.info("Init Qdrant Vectorstore!")
 
-
-    def _set_vector_store(self,embedding_model_name :str = ""):
+    def set_vector_store(self):
         # Validating
         assert self.collection_name, "Collection name cant be empty"
+        
+        # Define vector store
+        try:
+            # Logging status
+            Logger.info(f"Start Qdrant Vectorstore with collection name {self.collection_name}")
+            self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
 
-        # Get collection name
-        self.collection_name += embedding_model_name
         # Define vector store
 
         # Log state
