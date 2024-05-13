@@ -1,4 +1,4 @@
-from typing import Literal,Optional
+from typing import Literal,Optional,Union
 from config.params import *
 from llama_index.embeddings.together import TogetherEmbedding
 from llama_index.embeddings.cohere import CohereEmbedding
@@ -10,7 +10,7 @@ from system_component import Logger
 
 # Elastic Search Embedding: Notitfy
 class ServiceEmbedding(BaseEmbedding):
-    def __init__(self,model_name: Optional[str] = None,service_name: Literal["COHERE","GRADIENT","MISTRAL","OPENAI","TOGETHER","VOYAGE","NOMIC"] = "COHERE",batch_size: int = 10,max_length : int = 1024):
+    def __init__(self,model_name: Optional[str] = None,service_name: Union[Literal["COHERE","GRADIENT","MISTRAL","OPENAI","TOGETHER","VOYAGE","NOMIC"],str] = "COHERE",batch_size: int = 10,max_length : int = 1024):
         super().__init__(batch_size = batch_size,max_length= max_length)
         # Define variables
         self.list_services = list(supported_services.keys())
@@ -42,8 +42,10 @@ class ServiceEmbedding(BaseEmbedding):
             service_exception_msg = f"Service {service_name} is not supported!"
             Logger.exception(service_exception_msg)
             raise Exception(service_exception_msg)
-        # Specify
+
+        # Specify model name and batch size
         self._embedding_model.model_name = self.model_name
+        self._embedding_model.embed_batch_size = self.batch_size
 
         #Logging Info
         Logger.info(f"Launch {service_name} service embedding!")

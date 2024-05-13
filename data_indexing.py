@@ -3,24 +3,18 @@ from llama_index.core.ingestion import IngestionPipeline
 from ingestion_modules.custom_loader import CustomWebLoader,CustomPDFReader,WebProvider
 from llama_index.core.text_splitter import SentenceSplitter
 from ingestion_modules import utils
-from ai_modules.embedding_modules import OpenEmbedding,OpenEmbeddingProvider
-# from ai_modules.chatmodel_modules import ServiceChatModelProvider,ServiceChatModel
+# from ai_modules.embedding_modules import OpenEmbedding,OpenEmbeddingProvider
 from ai_modules.embedding_modules import ServiceEmbedding
 from ingestion_modules.custom_vectorstore import QdrantService,_QDRANT_COLLECTION
-from system_component.system_logging import Logger
+from config import params
+# from system_component.system_logging import Logger
 
 # Init embedding
 # open_embedding = OpenEmbedding(service_name=OpenEmbeddingProvider.FastEmbed)
 # embedding_model = open_embedding.get_embedding_model()
-service_embedding = ServiceEmbedding(service_name="COHERE",model_name="embed-english-light-v3.0")
-embedding_model = service_embedding.get_embedding_model()
 
 # Init vector stor service
 qdrant_service = QdrantService(mode="local")
-
-# Define large language model
-# service_provider = ServiceChatModel()
-# llm = service_provider.get_chat_model()
 
 # Web url for crawling
 web_url = "https://en.wikipedia.org/wiki/Neymar"
@@ -58,6 +52,9 @@ def load_documents(url:str):
     return docs
 
 def insert_all_to_database(url:str =web_url,pipeline = pipeline):
+    service_embedding = ServiceEmbedding(service_name=params.embedding_service, model_name=params.embedding_model_name)
+    embedding_model = service_embedding.get_embedding_model()
+
     # Get documents
     docs = load_documents(url=url)
     # Check state
@@ -70,10 +67,6 @@ def insert_all_to_database(url:str =web_url,pipeline = pipeline):
     docs = utils.convert_nodes_to_docs(nodes)
 
     # Build index
-    index = qdrant_service.build_index_from_docs(documents=docs, embedding_model=embedding_model,mode="override")
+    index = qdrant_service.build_index_from_docs(documents=docs, embedding_model=embedding_model)
 
-# # Inspecting time indexing
-# beginTime = time.time()
-# insert_all_to_database(url=web_url)
-# endTime = time.time() - beginTime
-# Logger.info(f"Indexing time {round(endTime,2)}s")
+insert_all_to_database()

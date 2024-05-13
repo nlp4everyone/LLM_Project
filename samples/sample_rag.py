@@ -1,16 +1,15 @@
-from ingestion_modules.custom_vectorstore import QdrantService
 from system_component import Logger
 from ai_modules.query_modules.custom_query_engine import BaseQueryEngine
 from ai_modules.chatmodel_modules import ServiceChatModel
-from samples import data_ingestion
+from ingestion_modules.custom_vectorstore import _QDRANT_COLLECTION
+import data_indexing
 
 # Define large language model
 service_provider = ServiceChatModel()
 llm = service_provider.get_chat_model()
 
 # Reference service
-qdrant_service = data_ingestion.qdrant_service
-embedding_model = data_ingestion.embedding_model
+qdrant_service = data_indexing.qdrant_service
 
 def querying_step(question: str):
     assert question, "Question cant be empty"
@@ -29,7 +28,7 @@ def querying_step(question: str):
 def main():
     # When collection is not existed, create new collection
     if not qdrant_service.collection_exists(collection_name=_QDRANT_COLLECTION):
-        data_ingestion.insert_all_to_database()
+        data_indexing.insert_all_to_database()
 
     # Find answer
     question = "Who is Neymar?"
