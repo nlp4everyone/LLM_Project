@@ -1,8 +1,10 @@
-from ingestion_modules.custom_vectorstore.base_method_vectorstore import BaseMethodVectorStore
+from ingestion_modules.custom_vectorstore.base_method_vectorstore import (
+    BaseMethodVectorStore,
+)
 from config import db_params
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
-from typing import Literal,List
+from typing import Literal, List
 from system_component.system_logging import Logger
 from llama_index.core import Document
 import qdrant_client
@@ -16,12 +18,18 @@ _QDRANT_PORT = db_params.QDRANT_PORT
 _QDRANT_COLLECTION = db_params.QDRANT_COLLECTION
 
 # Document
-#https://github.com/qdrant/fastembed\
-#https://qdrant.tech/documentation/concepts/
+# https://github.com/qdrant/fastembed\
+# https://qdrant.tech/documentation/concepts/
+
 
 class QdrantService(BaseMethodVectorStore, QdrantClient):
-    def __init__(self, collection_name: str = None, mode : Literal["memory","local","cloud"] = _QDRANT_MODE, qdrant_token : str = _QDRANT_TOKEN , 
-                 qdrant_url : str = _QDRANT_URL):
+    def __init__(
+        self,
+        collection_name: str = None,
+        mode: Literal["memory", "local", "cloud"] = _QDRANT_MODE,
+        qdrant_token: str = _QDRANT_TOKEN,
+        qdrant_url: str = _QDRANT_URL,
+    ):
         super().__init__()
         # Init params
         self._mode = mode if mode else "local"
@@ -29,7 +37,9 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
         self.qdrant_url = qdrant_url
 
         # collection_name is passed in fastapi. If not call api, take collection_name from env
-        self.collection_name = collection_name if collection_name else _QDRANT_COLLECTION
+        self.collection_name = (
+            collection_name if collection_name else _QDRANT_COLLECTION
+        )
 
         # Check type
         assert isinstance(qdrant_token, str), "Cloud id must be a string"
@@ -39,19 +49,15 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
         # self._client = None
         # Memory mode
         if self._mode == "memory":
-            self._client = qdrant_client.QdrantClient(
-                location=":memory:"
-            )
+            self._client = qdrant_client.QdrantClient(location=":memory:")
         # Local host mode
         elif self._mode == "local":
             self._client = qdrant_client.QdrantClient(
-                host="localhost",
-                port=_QDRANT_PORT
+                host="localhost", port=_QDRANT_PORT
             )
         elif self._mode == "cloud":
             self._client = qdrant_client.QdrantClient(
-                url=self.qdrant_url,
-                api_key=self.qdrant_token
+                url=self.qdrant_url, api_key=self.qdrant_token
             )
         else:
             Logger.exception("Wrong qdrant mode")
@@ -65,21 +71,27 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
     def set_vector_store(self):
         # Validating
         assert self.collection_name, "Collection name cant be empty"
-        
+
         # Define vector store
         try:
             # Logging status
-            Logger.info(f"Start Qdrant Vectorstore with collection name {self.collection_name}")
-            self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
+            Logger.info(
+                f"Start Qdrant Vectorstore with collection name {self.collection_name}"
+            )
+            self.vector_store = QdrantVectorStore(
+                client=self._client, collection_name=self.collection_name
+            )
 
-        # Define vector store
+        except:
+            Logger.exception("Connection Refused")
+            raise Exception("Connection Refused")
 
-        # Log state
-        Logger.info(f"Start Qdrant Vectorstore with collection name {self.collection_name}")
-        # Logging status
-        self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
-
-    def build_index_from_docs(self,documents: List[Document], embedding_model, mode: Literal["insert", "override"] = "insert"):
+    def build_index_from_docs(
+        self,
+        documents: List[Document],
+        embedding_model,
+        mode: Literal["insert", "override"] = "insert",
+    ):
         # When recreate collection available
         if mode == "override":
             # Check if collection existed, delete it
@@ -87,10 +99,11 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
             pass
 
         # Set vector store again ( New)
-        self._set_vector_store()
+        self.set_vector_store()
         # Apply abstraction
-        super().build_index_from_docs(documents=documents,embedding_model=embedding_model)
-
+        super().build_index_from_docs(
+            documents=documents, embedding_model=embedding_model
+        )
 
     def load_index(self, embedding_model):
         assert self.collection_name, "Collection cant be None"
