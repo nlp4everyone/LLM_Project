@@ -9,11 +9,15 @@ UPSTASH_TOKEN = db_params.UPSTASH_TOKEN
 
 # Notes: Free cloud service with displaying embedding, sentences , etc (https://console.upstash.com/vector)
 class UpstashService(BaseMethodVectorStore):
-    # def __init__(self):
-    #     super().__init__()
-    #     self.set_vector_store()
+    def __init__(self, upstash_url : str = UPSTASH_URL , upstash_token : str = UPSTASH_TOKEN):
+        super().__init__()
+        # Set value
+        self.upstash_url = upstash_url
+        self.upstash_token = upstash_token
+        # Set vector store
+        self._set_vector_store(upstash_url = upstash_url, upstash_token = upstash_token)
 
-    def set_vector_store(self, upstash_url : str = UPSTASH_URL , upstash_token : str = UPSTASH_TOKEN):
+    def _set_vector_store(self, upstash_url : str, upstash_token : str):
         # Check type# Check type
         assert isinstance(upstash_url, str), "Upstash url must be a string"
         assert isinstance(upstash_token, str), "Upstash token must be a string"

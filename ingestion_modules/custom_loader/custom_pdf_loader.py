@@ -7,7 +7,7 @@ from system_component.system_logging import Logger
 import os
 LLAMAPARSE_KEY = params.LLAMAPARSE_KEY
 
-class PDFReader():
+class CustomPDFReader():
     def __init__(self,pdf_provider : Literal["PyMuPDF","Unstructured","LlamaParse"] = "PyMuPDF"):
         # Define variable
         self._pdf_provider = pdf_provider

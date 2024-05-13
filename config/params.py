@@ -4,6 +4,11 @@ load_dotenv()
 cache_folder = "cache_folder"
 embedding_model_folder = os.path.join(cache_folder,"embedding_model")
 
+# Embedding model params
+# Define params
+embedding_service = "COHERE"
+embedding_model_name = "embed-english-light-v3.0"
+
 # Model config
 AI21_KEY = os.getenv("AI21_KEY")
 ANTHROPIC_KEY = os.getenv("ANTHROPIC_KEY") # Max usage 10$
@@ -20,6 +25,7 @@ GEMINI_KEY = os.getenv("GEMINI_KEY") # Free to use
 VOYAGE_KEY = os.getenv("VOYAGE_KEY") # Free for 50M first tokens
 NOMIC_KEY = os.getenv("NOMIC_KEY") # Free for 50M first tokens
 LLAMAPARSE_KEY = os.getenv("LLAMAPARSE_KEY") # https://cloud.llamaindex.ai/parse
+
 
 # Define service
 supported_services = {

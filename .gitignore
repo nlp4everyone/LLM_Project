@@ -8,7 +8,7 @@ ai_modules/embedding_modules/__pycache__
 ai_modules/query_modules/__pycache__/
 config/__pycache__
 ingestion_modules/custom_loader/__pycache__
-ingestion_modules/text_splitter/__pycache__/
+ingestion_modules/custom_text_splitter/__pycache__/
 ai_modules/chatmodel_modules/__pycache__
 ingestion_modules/__pycache__/
 ingestion_modules/custom_vectorstore/__pycache__/

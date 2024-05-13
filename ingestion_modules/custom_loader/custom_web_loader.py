@@ -44,7 +44,7 @@ class CustomWebLoader():
         return result
 
 
-class Utils():
+class WebUtils():
     @staticmethod
     def get_sub_link(root_url):
         reqs = requests.get(root_url)

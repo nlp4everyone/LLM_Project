@@ -1,5 +1,4 @@
-from ingestion_modules.custom_vectorstore.qdrant_service import _QDRANT_COLLECTION
-from system_component.system_logging import Logger
+from system_component import Logger
 from ai_modules.query_modules.custom_query_engine import BaseQueryEngine
 from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModel
 from samples import data_web_ingestion
