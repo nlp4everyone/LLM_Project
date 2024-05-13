@@ -1,12 +1,12 @@
 from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModel
-import data_ingestion
+import samples.data_web_ingestion as data_web_ingestion
 
 # Define large language model
 service_provider = ServiceChatModel()
 llm = service_provider.get_chat_model()
 # Reference service
-qdrant_service = data_ingestion.qdrant_service
-embedding_model = data_ingestion.embedding_model
+qdrant_service = data_web_ingestion.qdrant_service
+embedding_model = data_web_ingestion.embedding_model
 
 def chat_response(question: str):
     # Define index

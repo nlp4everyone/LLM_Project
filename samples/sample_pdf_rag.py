@@ -2,23 +2,23 @@ from ingestion_modules.custom_vectorstore.qdrant_service import _QDRANT_COLLECTI
 from system_component.system_logging import Logger
 from ai_modules.query_modules.custom_query_engine import BaseQueryEngine
 
-import data_ingestion_pdf
+from samples import data_pdf_ingestion
 
 # Reference service
-qdrant_service = data_ingestion_pdf.qdrant_service
-llm = data_ingestion_pdf.llm
-embedding_model = data_ingestion_pdf.embedding_model
+qdrant_service = data_pdf_ingestion.qdrant_service
+llm = data_pdf_ingestion.llm
+embedding_model = data_pdf_ingestion.embedding_model
 
 from ai_modules.chatmodel_modules.service_chatmodel import ServiceChatModel
-from samples import data_ingestion
+from samples import data_web_ingestion
 
 # Define large language model
 service_provider = ServiceChatModel()
 llm = service_provider.get_chat_model()
 
 # Reference service
-qdrant_service = data_ingestion.qdrant_service
-embedding_model = data_ingestion.embedding_model
+qdrant_service = data_web_ingestion.qdrant_service
+embedding_model = data_web_ingestion.embedding_model
 
 
 def querying_step(question: str):
@@ -41,7 +41,7 @@ def main():
 
         data_ingestion_pdf.insert()
 
-        data_ingestion.insert_all_to_database()
+        data_web_ingestion.insert_all_to_database()
 
 
     # Find answer
