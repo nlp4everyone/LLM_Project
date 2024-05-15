@@ -68,7 +68,7 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
         # Log state
         Logger.info("Init Qdrant Vectorstore!")
 
-    def set_vector_store(self):
+    def _set_vector_store(self):
         # Validating
         assert self.collection_name, "Collection name cant be empty"
 
@@ -78,7 +78,7 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
             Logger.info(
                 f"Start Qdrant Vectorstore with collection name {self.collection_name}"
             )
-            self.vector_store = QdrantVectorStore(
+            self._vector_store = QdrantVectorStore(
                 client=self._client, collection_name=self.collection_name
             )
 
@@ -99,7 +99,7 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
             pass
 
         # Set vector store again ( New)
-        self.set_vector_store()
+        self._set_vector_store()
         # Apply abstraction
         super().build_index_from_docs(
             documents=documents, embedding_model=embedding_model
