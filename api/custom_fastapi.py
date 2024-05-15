@@ -17,17 +17,11 @@ from typing import List
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import HTMLResponse
 from typing import Annotated
-from pydantic import BaseModel
 import uvicorn
 
 app = FastAPI(debug=True)
 
 save_path = "save_pdf"
-
-
-class PdfParam(BaseModel):
-    files: Annotated[List[UploadFile], File(description="Multiple files as UploadFile")]
-    collection_name: str = Form(description="Name of the new collection")
 
 
 # Function to save pdf after upload
@@ -106,3 +100,8 @@ async def main():
 </body>
     """
     return HTMLResponse(content=content)
+
+
+if __name__ == "__main__":
+
+    uvicorn.run(app, host="0.0.0.0", port=int(FASTAPI_PORT))
