@@ -55,6 +55,21 @@ async def create_upload_files(
         create_collection(content, collection_name)
     return f"Create collection {collection_name} successfully"
 
+@app.post("/Chat/")
+async def create_files(
+    file: Annotated[List[UploadFile], File(description="Multiple reference documents")]
+):
+
+    if len(file) > 1:
+        raise Exception("Only one primary document can be uploaded")
+
+    pdf_reader = CustomPDFReader()
+    file = file[0]
+    bin_content = await file.read()
+    save_pdf(bin_content, file.filename)
+    content = await pdf_reader.aload_data(f"{save_path}/{file.filename}")
+    print(content)
+    return "Upload primary document successfully"
 
 @app.get("/")
 async def main():

@@ -36,7 +36,7 @@ pipeline = IngestionPipeline(
 # Function to create a collection in qdrant db
 def create_collection(content: str, collection_name: str):
     # Init vector_store
-    qdrant_service = QdrantService(collection_name=collection_name, mode="local")
+    qdrant_service = QdrantService(collection_name=collection_name)
 
     nodes = pipeline.run(documents=content)
 
