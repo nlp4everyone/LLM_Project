@@ -6,9 +6,9 @@ services:
     image: qdrant/qdrant
     build: .
     volumes:
-      - ./qdrant_volume/data:/qdrant_volume/data
+      - "./data/qdrant_data:/qdrant/storage"
     ports:
-      - 6333:6333
+      - ${QDRANT_PORT}:6333
 
     deploy:
       resources:
@@ -16,11 +16,13 @@ services:
           memory: 2048M
         reservations:
           memory: 300M
+    networks:
+      - rag_network
+
 
   main_stream:
     image: llamaindex-project
     container_name: llamaindex-project
-    network_mode: host
     build: .
     deploy:
       resources:
@@ -28,10 +30,17 @@ services:
           memory: 2048M
         reservations:
           memory: 300M
-    ports:
-      - 8501:8501
-#
-#
-volumes:
-  qdrant_volume:
+    environment:
+      QDRANT_MODE: docker
+      QDRANT_URL: qdrant_database
 
+    ports:
+      - 8000:8000
+    networks:
+      - rag_network
+
+#
+#
+networks:
+  rag_network:
+    driver: bridge
