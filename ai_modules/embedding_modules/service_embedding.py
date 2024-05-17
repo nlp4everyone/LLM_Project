@@ -1,8 +1,5 @@
 from typing import Literal,Optional,Union
 from config.params import *
-from llama_index.embeddings.together import TogetherEmbedding
-from llama_index.embeddings.cohere import CohereEmbedding
-from llama_index.embeddings.voyageai import VoyageEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
 # from llama_index.embeddings.nomic import NomicEmbedding
 from ai_modules.embedding_modules.base_embedding import BaseEmbedding
@@ -23,10 +20,13 @@ class ServiceEmbedding(BaseEmbedding):
         self.api_key = supported_services[service_name]["KEY"]
         # TOGETHER service
         if service_name == "TOGETHER":
+            from llama_index.embeddings.together import TogetherEmbedding
             self._embedding_model = TogetherEmbedding(api_key=self.api_key,model_name="togethercomputer/m2-bert-80M-8k-retrieval")
         elif service_name == "COHERE":
+            from llama_index.embeddings.cohere import CohereEmbedding
             self._embedding_model = CohereEmbedding(cohere_api_key=self.api_key)
         elif service_name == "VOYAGE":
+            from llama_index.embeddings.voyageai import VoyageEmbedding
             self._embedding_model = VoyageEmbedding(model_name="voyage-2",voyage_api_key=self.api_key,embed_batch_size=self.batch_size)
         elif service_name == "OPENAI":
             self._embedding_model = OpenAIEmbedding(api_key=self.api_key,embed_batch_size=self.batch_size)
@@ -34,8 +34,6 @@ class ServiceEmbedding(BaseEmbedding):
             mistral_exception_msg = "Mistral currently required charge"
             Logger.exception(mistral_exception_msg)
             raise Exception(mistral_exception_msg)
-        elif service_name == "COHERE":
-            self._embedding_model = CohereEmbedding(cohere_api_key=self.api_key,input_type="search_query")
         # elif service_name == "NOMIC":
         #     self._embedding_model = NomicEmbedding(api_key=self.api_key,embed_batch_size=self.batch_size)
         else:

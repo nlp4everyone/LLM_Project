@@ -16,6 +16,7 @@ QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_TOKEN = os.getenv("QDRANT_TOKEN")
 QDRANT_PORT = int(os.getenv("QDRANT_PORT"))
 QDRANT_COLLECTION = os.getenv("QDRANT_COLLECTION")
+QDRANT_MODE = os.getenv("QDRANT_MODE")
 
 # Mongo
 MONGO_DB_NAME = os.getenv("MONGO_DB_NAME")

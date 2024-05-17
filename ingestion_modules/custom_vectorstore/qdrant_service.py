@@ -62,7 +62,7 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
         # Log state
         Logger.info("Init Qdrant Vectorstore!")
 
-    def set_vector_store(self):
+    def _set_vector_store(self):
         # Validating
         assert self.collection_name, "Collection name cant be empty"
         
@@ -71,6 +71,9 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
             # Logging status
             Logger.info(f"Start Qdrant Vectorstore with collection name {self.collection_name}")
             self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
+
+        except Exception as e:
+            Logger.info(e)
 
         # Define vector store
 

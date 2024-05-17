@@ -62,7 +62,7 @@ class ServiceChatModel(BaseChatModel):
         elif service_name == "OPENAI":
             # Install dependency
             from llama_index.llms.openai import OpenAI
-            self._chat_model = OpenAI(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key)
+            self._chat_model = OpenAI(temperature=self.temperature,max_tokens=self.max_tokens,api_key=self.api_key,timeout=15)
 
         elif service_name == "PERPLEXITY":
             # Install dependency

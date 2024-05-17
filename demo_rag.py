@@ -14,11 +14,10 @@ state_path = os.path.join(params.cache_folder,"streamlit_status.json")
 
 @st.cache_resource
 def load_chat_model(chat_model_provider:str,chat_model:str,temperature:float):
-    # Default service
-
     # Define service
     chat_service = ServiceChatModel(service_name=chat_model_provider.upper(),model_name=chat_model,temperature=temperature)
     return chat_service.get_chat_model()
+
 @st.cache_resource
 def load_embedding_model(embedding_provider:str,model_name:str,batch_size = 1):
     # Define service
