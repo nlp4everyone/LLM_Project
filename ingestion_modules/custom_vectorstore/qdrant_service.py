@@ -26,7 +26,7 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
     def __init__(
         self,
         collection_name: str = None,
-        mode: Literal["memory", "local", "cloud"] = _QDRANT_MODE,
+        mode: Literal["memory", "local", "cloud", "docker"] = _QDRANT_MODE,
         qdrant_token: str = _QDRANT_TOKEN,
         qdrant_url: str = _QDRANT_URL,
     ):
@@ -59,6 +59,10 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
             self._client = qdrant_client.QdrantClient(
                 url=self.qdrant_url, api_key=self.qdrant_token
             )
+        elif self._mode == "docker":
+            self._client = qdrant_client.QdrantClient(
+                url=self.qdrant_url, port=_QDRANT_PORT
+            )
         else:
             Logger.exception("Wrong qdrant mode")
             raise Exception("Wrong qdrant mode")
@@ -71,7 +75,6 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
     def _set_vector_store(self):
         # Validating
         assert self.collection_name, "Collection name cant be empty"
-
         # Define vector store
         try:
             # Logging status
