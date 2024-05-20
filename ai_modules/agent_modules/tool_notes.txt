@@ -1,0 +1,8 @@
+#Useful tool:
+Search:
+Tavily (1000 Requests per month)
+Duckduckgo (Unlimited)
+Exa ( 1000 Requests per month)
+
+Weather:
+OpenWeather ( 1000 Requests per month)

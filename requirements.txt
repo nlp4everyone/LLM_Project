@@ -29,3 +29,8 @@ llama-index-embeddings-together
 #llama-index-embeddings-voyageai
 #llama-index-embeddings-openai
 llama-index-embeddings-cohere
+llama-index-tools-duckduckgo
+llama-index-tools-tavily-research
+llama-index-tools-exa
+llama-index-tools-weather
+pyowm
