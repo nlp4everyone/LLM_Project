@@ -21,11 +21,12 @@ _QDRANT_COLLECTION = db_params.QDRANT_COLLECTION
 # https://github.com/qdrant/fastembed\
 # https://qdrant.tech/documentation/concepts/
 
+
 class QdrantService(BaseMethodVectorStore, QdrantClient):
     def __init__(
         self,
         collection_name: str = None,
-        mode: Literal["memory", "local", "cloud"] = _QDRANT_MODE,
+        mode: Literal["memory", "local", "cloud", "docker"] = _QDRANT_MODE,
         qdrant_token: str = _QDRANT_TOKEN,
         qdrant_url: str = _QDRANT_URL,
     ):
@@ -48,19 +49,19 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
         # self._client = None
         # Memory mode
         if self._mode == "memory":
-            self._client = qdrant_client.QdrantClient(
-                location=":memory:"
-            )
+            self._client = qdrant_client.QdrantClient(location=":memory:")
         # Local host mode
         elif self._mode == "local":
             self._client = qdrant_client.QdrantClient(
-                host="localhost",
-                port=_QDRANT_PORT
+                host="localhost", port=_QDRANT_PORT
             )
         elif self._mode == "cloud":
             self._client = qdrant_client.QdrantClient(
-                url=self.qdrant_url,
-                api_key=self.qdrant_token
+                url=self.qdrant_url, api_key=self.qdrant_token
+            )
+        elif self._mode == "docker":
+            self._client = qdrant_client.QdrantClient(
+                url=self.qdrant_url, port=_QDRANT_PORT
             )
         else:
             Logger.exception("Wrong qdrant mode")
@@ -74,7 +75,6 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
     def _set_vector_store(self):
         # Validating
         assert self.collection_name, "Collection name cant be empty"
-
         # Define vector store
         try:
             # Logging status
@@ -84,12 +84,10 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
             self._vector_store = QdrantVectorStore(
                 client=self._client, collection_name=self.collection_name
             )
-            Logger.info(f"Start Qdrant Vectorstore with collection name {self.collection_name}")
-            self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
 
-        except Exception as e:
-            Logger.info(e)
-
+        except:
+            Logger.exception("Connection Refused")
+            raise Exception("Connection Refused")
 
     def build_index_from_docs(
         self,
