@@ -6,8 +6,9 @@ from llama_index.vector_stores.qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 from typing import Literal, List
 from system_component.system_logging import Logger
-from llama_index.core import Document
+from llama_index.core.schema import Document, BaseNode
 import qdrant_client
+from llama_index.core.vector_stores import VectorStoreQuery
 
 # Define params
 # Qdrant service
@@ -107,6 +108,23 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
         super().build_index_from_docs(
             documents=documents, embedding_model=embedding_model
         )
+
+    def build_index_from_nodes(
+        self,
+        nodes: List[BaseNode],
+        embedding_model,
+        mode: Literal["insert", "override"] = "insert",
+    ):
+        # When recreate collection available
+        if mode == "override":
+            # Check if collection existed, delete it
+            # if self.collection_exists(self.collection_name): self.delete_collection(self.collection_name)
+            pass
+
+        # Set vector store again ( New)
+        self._set_vector_store()
+        # Apply abstraction
+        super().build_index_from_nodes(nodes=nodes, embedding_model=embedding_model)
 
     def load_index(self, embedding_model):
         assert self.collection_name, "Collection cant be None"
