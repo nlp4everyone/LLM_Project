@@ -17,3 +17,4 @@ ingestion_modules/custom_docstore/__pycache__/
 system_component/__pycache__/
 save_pdf/*
 *.pdf
+wandb
