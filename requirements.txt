@@ -37,3 +37,4 @@ llama-index-tools-weather
 pyowm
 # Callback
 llama-index-callbacks-wandb
+llama-index-callbacks-langfuse

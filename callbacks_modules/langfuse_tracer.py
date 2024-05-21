@@ -1,7 +1,7 @@
 from langfuse.llama_index import LlamaIndexCallbackHandler
 from config import service_params
 
-
+# Free for 50k observations
 class LangFuseTracer(LlamaIndexCallbackHandler):
     # Define params
     _langfuse_public_key = service_params.LANGFUSE_PUBLIC_KEY

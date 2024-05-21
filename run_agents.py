@@ -16,7 +16,7 @@ embedding_service = ServiceEmbedding(model_name=params.embedding_model_name,serv
 embedding_model  = embedding_service.get_embedding_model()
 
 # Setting callbacks
-Settings.callback_manager = CallbackManager([TokenCounter.counter,LangFuseTracer.tracer])
+# Settings.callback_manager = CallbackManager([TokenCounter.counter,LangFuseTracer.tracer])
 
 # Define chat model
 chat_service = ServiceChatModel(service_name=ServiceChatModelProvider.GEMINI)

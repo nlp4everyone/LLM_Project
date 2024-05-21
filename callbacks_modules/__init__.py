@@ -1,4 +1,4 @@
 from callbacks_modules.token_counter import TokenCounter
-from callbacks_modules.llama_debug import LlamaDebug
-from callbacks_modules.wandb_tracer import WandbTracer
+from callbacks_modules.llama_debugger import LlamaDebugger
+# from callbacks_modules.wandb_tracer import WandbTracer
 from callbacks_modules.langfuse_tracer import LangFuseTracer
