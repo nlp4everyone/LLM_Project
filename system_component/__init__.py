@@ -1,1 +1,0 @@
-from system_component.system_logging import Logger

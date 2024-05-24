@@ -17,7 +17,7 @@ class ServiceChatModelProvider(StrEnum):
     GEMINI = "GEMINI"
 
 class ServiceChatModel(BaseChatModel):
-    def __init__(self,model_name: Union[str,None] = None,service_name: Union[ServiceChatModelProvider,str] = ServiceChatModelProvider.GEMINI,temperature: float = 0.8,max_tokens :int = 512):
+    def __init__(self,model_name: str = "default",service_name: Union[ServiceChatModelProvider,str] = ServiceChatModelProvider.GEMINI,temperature: float = 0.8,max_tokens :int = 512):
         super().__init__(temperature = temperature,max_tokens = max_tokens)
 
         # Service support
@@ -33,6 +33,7 @@ class ServiceChatModel(BaseChatModel):
 
         # Default model
         self._chat_model = None
+        self._model_name = model_name
 
         # Other service
         if service_name == "ANTHROPIC":
@@ -52,7 +53,8 @@ class ServiceChatModel(BaseChatModel):
         elif service_name == "GROQ":
             # Install dependency
             from llama_index.llms.groq import Groq
-            self._chat_model = Groq(model="llama3-8b-8192",api_key=self.api_key)
+            default_model = "llama3-8b-8192"
+            self._chat_model = Groq(model=default_model,api_key=self.api_key)
 
         elif service_name == "LLAMAAPI":
             # Install dependency
@@ -80,6 +82,7 @@ class ServiceChatModel(BaseChatModel):
             self._chat_model = Gemini(api_key=self.api_key,temperature=self.temperature,max_tokens=self.max_tokens)
         else:
             raise Exception(f"Service {service_name} is not supported!")
+
 
         # Print message
         Logger.info(f"Launch {service_name} Chat model with temperature {self.temperature}")

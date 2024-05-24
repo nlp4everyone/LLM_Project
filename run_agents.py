@@ -36,7 +36,7 @@ query_tool = QueryEngineTool(
 )
 
 # Run agent
-agent = AgentRunner.from_llm(tools=[tavily_tool,query_tool,open_weather_tool],llm=llm,verbose=True)
+agent = AgentRunner.from_llm(tools=[query_tool],llm=llm,verbose=True)
 res = agent.chat("Who is Neymar?")
-
-TokenCounter.print_properties()
+print(res)
+# TokenCounter.print_properties()
