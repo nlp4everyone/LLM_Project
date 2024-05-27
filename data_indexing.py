@@ -69,10 +69,10 @@ def preprocess(docs: list[Document],pipeline):
 def insert_all_to_database(nodes,embedding_model):
 
     # Convert nodes to docs
-    docs = utils.convert_nodes_to_docs(nodes)
+    # docs = utils.convert_nodes_to_docs(nodes)
 
     # Build index
-    index = qdrant_service.build_index_from_docs(documents=docs, embedding_model=embedding_model)
+    index = qdrant_service.build_index_from_docs(documents=nodes, embedding_model=embedding_model)
 
 def main():
     # Default pipeline
@@ -83,7 +83,7 @@ def main():
             # QuestionsAnsweredExtractor(questions=3,num_workers=4)
             # SummaryExtractor(num_workers=4)
             #KeywordExtractor(keywords=3,num_workers=16)
-            EntityExtractor(device="cuda") # Extract entity with BERT model
+            # EntityExtractor(device="cuda") # Extract entity with BERT model
         ],
     )
 

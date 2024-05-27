@@ -2,9 +2,11 @@ import os.path
 import chromadb
 from strenum import StrEnum
 from llama_index.vector_stores.chroma import ChromaVectorStore
-from typing import List
+from typing import List,Union
 from llama_index.core import Document,StorageContext,VectorStoreIndex
 from config import params
+from llama_index.core.schema import BaseNode
+from ingestion_modules.custom_vectorstore import BaseMethodVectorStore
 from system_component.system_logging import Logger
 # Local vector store
 
@@ -13,8 +15,9 @@ class ChromaMode(StrEnum):
     DOCKER = "Docker",
     Ephemeral = "Ephemeral"
 
-class ChromaService():
+class ChromaService(BaseMethodVectorStore):
     def __init__(self,storing_mode :ChromaMode = ChromaMode.LOCAL,collection_name : str = "chroma_collection",chroma_cache_dir : str = "chroma_vectorstore"):
+        super().__init__()
         # Define params
         self.collection_name = collection_name
         self._storing_mode = storing_mode
@@ -36,19 +39,19 @@ class ChromaService():
         Logger.info(f"Start Chroma Vectorstore with {self._storing_mode} Mode!")
 
 
-    def build_index_from_docs(self,documents: List[Document], embedding_model):
+    def build_index_from_docs(
+            self,
+            documents: Union[List[Document],List[BaseNode]],
+            embedding_model
+    ):
         assert isinstance(documents, list), "Please insert list of documents"
         assert documents, "Data cannot be empty"
 
         # Build collection, vector store and storage context
         chroma_collection = self._database.get_or_create_collection(name=self.collection_name)
-        vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-        storage_context = StorageContext.from_defaults(vector_store=vector_store)
-
-        # Return index
-        return VectorStoreIndex.from_documents(
-            documents, storage_context=storage_context, embed_model=embedding_model
-        )
+        self._vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+        # Build index
+        super().build_index_from_docs(documents = documents,embedding_model = embedding_model)
 
     def load_index(self,embedding_model):
         # Ephemeral case not supported!
@@ -59,10 +62,10 @@ class ChromaService():
         # Check if local mode or Cloud mode
         if self._storing_mode == ChromaMode.LOCAL:
             database = chromadb.PersistentClient(path=self.cache_dir)
+            # Define vector store
             chroma_collection = database.get_or_create_collection(self.collection_name)
-            vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-            return VectorStoreIndex.from_vector_store(
-                vector_store,
-                embed_model=embedding_model,
-            )
+            self._vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+
+            # Create vector store
+            super().load_index(embedding_model = embedding_model)
 

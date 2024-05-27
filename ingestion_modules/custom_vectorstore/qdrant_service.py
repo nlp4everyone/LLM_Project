@@ -2,9 +2,10 @@ from ingestion_modules.custom_vectorstore.base_method_vectorstore import (
     BaseMethodVectorStore,
 )
 from config import db_params
+from llama_index.core.schema import BaseNode
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
-from typing import Literal, List
+from typing import Literal, List , Union
 from system_component.system_logging import Logger
 from llama_index.core import Document
 import qdrant_client
@@ -93,7 +94,7 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
 
     def build_index_from_docs(
         self,
-        documents: List[Document],
+        documents: Union[List[Document],List[BaseNode]],
         embedding_model,
         mode: Literal["insert", "override"] = "insert",
     ):
