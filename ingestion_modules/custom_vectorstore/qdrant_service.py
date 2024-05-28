@@ -9,6 +9,7 @@ from typing import Literal, List , Union
 from system_component.system_logging import Logger
 from llama_index.core import Document
 import qdrant_client
+from llama_index.core import StorageContext,VectorStoreIndex
 
 # Define params
 # Qdrant service
@@ -27,12 +28,14 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
         self,
         collection_name: str = None,
         mode: Literal["memory", "local", "cloud"] = _QDRANT_MODE,
+        use_async : bool = True,
         qdrant_token: str = _QDRANT_TOKEN,
         qdrant_url: str = _QDRANT_URL,
     ):
         super().__init__()
         # Init params
         self._mode = mode if mode else "local"
+        self._use_async = use_async
         self.qdrant_token = qdrant_token
         self.qdrant_url = qdrant_url
 
@@ -67,8 +70,23 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
             Logger.exception("Wrong qdrant mode")
             raise Exception("Wrong qdrant mode")
 
-        # # Set vector store
-        # self._set_vector_store()
+        # Asynchronous mode
+        if self._use_async:
+            # Local mode
+            if self._mode == "local":
+                self._aclient = qdrant_client.AsyncQdrantClient(
+                    host="localhost",
+                    port=_QDRANT_PORT
+                )
+            # Cloud mode
+            elif self._mode == "cloud":
+                self._aclient = qdrant_client.AsyncQdrantClient(
+                    url=self.qdrant_url,
+                    api_key=self.qdrant_token
+                )
+            else:
+                raise Exception("Mode memory cant not support asynchronous")
+
         # Log state
         Logger.info("Init Qdrant Vectorstore!")
 
@@ -82,11 +100,21 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
             Logger.info(
                 f"Start Qdrant Vectorstore with collection name {self.collection_name}"
             )
-            self._vector_store = QdrantVectorStore(
-                client=self._client, collection_name=self.collection_name
-            )
+
+            # Set vector store without async
+            if not self._use_async:
+                self._vector_store = QdrantVectorStore(
+                    client = self._client,
+                    collection_name = self.collection_name
+                )
+            else:
+                self._vector_store = QdrantVectorStore(
+                    client = self._client,
+                    collection_name = self.collection_name,
+                    aclient = self._aclient,
+                    prefer_grpc=True
+                )
             Logger.info(f"Start Qdrant Vectorstore with collection name {self.collection_name}")
-            self._vector_store = QdrantVectorStore(client=self._client, collection_name=self.collection_name)
 
         except Exception as e:
             Logger.info(e)
@@ -107,9 +135,31 @@ class QdrantService(BaseMethodVectorStore, QdrantClient):
         # Set vector store again ( New)
         self._set_vector_store()
         # Apply abstraction
-        super().build_index_from_docs(
-            documents=documents, embedding_model=embedding_model
-        )
+        # super().build_index_from_docs(
+        #     documents=documents, embedding_model=embedding_model
+        # )
+        # Check service
+        if self._vector_store == None:
+            Logger.exception("Please set vector store")
+            raise Exception("Please set vector store")
+
+        # Check input
+        assert isinstance(documents, list), "Please insert list of documents"
+        assert documents, "Data cannot be empty"
+
+        # Build storage context
+        storage_context = StorageContext.from_defaults(vector_store=self._vector_store)
+        # Update state
+        Logger.info("Building index ...")
+
+        # Check nodes or doc
+        if isinstance(documents[0], Document):
+            return VectorStoreIndex.from_documents(documents=documents,
+                                                   storage_context=storage_context,
+                                                   embed_model=embedding_model,
+                                                   use_async = self._use_async)
+        # Vector store with Node mode
+        return VectorStoreIndex(nodes = documents, embed_model = embedding_model, storage_context = storage_context,use_async = self._use_async)
 
     def load_index(self, embedding_model):
         assert self.collection_name, "Collection cant be None"

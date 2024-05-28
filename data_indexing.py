@@ -12,7 +12,7 @@ from llama_index.core import Document,Settings
 from llama_index.core.extractors import TitleExtractor,QuestionsAnsweredExtractor,KeywordExtractor,SummaryExtractor,PydanticProgramExtractor
 from llama_index.extractors.entity import EntityExtractor
 from ai_modules.chatmodel_modules import ServiceChatModel,ServiceChatModelProvider
-import time
+import time,asyncio
 
 # Init embedding
 # open_embedding = OpenEmbedding(service_name=OpenEmbeddingProvider.FastEmbed)
@@ -57,13 +57,13 @@ def load_documents(url:str):
             print(e)
     return docs
 
-def preprocess(docs: list[Document],pipeline):
+async def preprocess(docs: list[Document],pipeline, num_workers = 8):
     # Check state
     if docs == None:
         raise Exception("Document cant be None")
 
     # Run through pipeline
-    nodes = pipeline.run(documents=docs)
+    nodes = await pipeline.arun(documents = docs, num_workers = num_workers)
     return nodes
 
 def insert_all_to_database(nodes,embedding_model):
@@ -90,7 +90,7 @@ def main():
     # Get documents from url
     docs = load_documents(url=web_url)
     # Get nodes
-    nodes = preprocess(docs=docs,pipeline=pipeline)
+    nodes = asyncio.run(preprocess(docs=docs,pipeline=pipeline))
 
     # Insert to database
     insert_all_to_database(nodes=nodes,embedding_model=embedding_model)
