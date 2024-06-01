@@ -1,7 +1,7 @@
 from llama_index.core import VectorStoreIndex
 from typing import Sequence
 from llama_index.core import StorageContext
-from system_component.system_logging import Logger
+from system_components.system_logging import Logger
 from llama_index.core.schema import BaseNode
 
 class BaseMethodVectorStore():

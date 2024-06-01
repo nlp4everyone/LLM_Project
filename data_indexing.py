@@ -4,25 +4,25 @@ from ingestion_modules.custom_loader import CustomWebLoader,CustomPDFReader,WebP
 from llama_index.core.text_splitter import SentenceSplitter
 from ingestion_modules import utils
 # from ai_modules.embedding_modules import OpenEmbedding,OpenEmbeddingProvider
-from ai_modules.embedding_modules import ServiceEmbedding
+from embedding_modules.llamaindex import ServiceEmbeddingModule
 from ingestion_modules.custom_vectorstore import QdrantService,_QDRANT_COLLECTION
 from config import params
 from llama_index.core import Document,Settings
 # from system_component.system_logging import Logger
 from llama_index.core.extractors import TitleExtractor,QuestionsAnsweredExtractor,KeywordExtractor,SummaryExtractor,PydanticProgramExtractor
 from llama_index.extractors.entity import EntityExtractor
-from ai_modules.chatmodel_modules import ServiceChatModel,ServiceChatModelProvider
+from chat_modules.llamaindex import ServiceChatModule
 import time,asyncio
 
 # Init embedding
 # open_embedding = OpenEmbedding(service_name=OpenEmbeddingProvider.FastEmbed)
 # embedding_model = open_embedding.get_embedding_model()
-service_embedding = ServiceEmbedding(service_name=params.embedding_service, model_name=params.embedding_model_name)
-embedding_model = service_embedding.get_embedding_model()
+embedding_module = ServiceEmbeddingModule(service_name=params.embedding_service, model_name=params.embedding_model_name)
+embedding_model = embedding_module.get_embedding_model()
 
 # Define chat model
-chat_service = ServiceChatModel(service_name=ServiceChatModelProvider.GROQ)
-llm = chat_service.get_chat_model()
+chat_module = ServiceChatModule(service_name="GEMINI")
+llm = chat_module.get_chat_model()
 
 Settings.llm = llm
 # Init vector stor service

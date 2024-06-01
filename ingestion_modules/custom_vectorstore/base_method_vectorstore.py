@@ -3,7 +3,7 @@ from llama_index.core import Document
 from llama_index.core.schema import BaseNode
 from typing import List,Literal,Union
 from llama_index.core import StorageContext
-from system_component.system_logging import Logger
+from system_components.system_logging import Logger
 
 class BaseMethodVectorStore():
     def __init__(self):

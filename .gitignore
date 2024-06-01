@@ -18,6 +18,7 @@ system_component/__pycache__/
 save_pdf/*
 *.pdf
 wandb
-chat_modules/
-embedding_modules/
-system_components/
+system_components
+chat_modules
+embedding_modules
+config/params.py

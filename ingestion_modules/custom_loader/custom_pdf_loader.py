@@ -3,7 +3,7 @@ from llama_parse.base import LlamaParse
 from config import params
 from typing import Union,List,Literal
 from pathlib import Path
-from system_component.system_logging import Logger
+from system_components.system_logging import Logger
 import os
 LLAMAPARSE_KEY = params.LLAMAPARSE_KEY
 

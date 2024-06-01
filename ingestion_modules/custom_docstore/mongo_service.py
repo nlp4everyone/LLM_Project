@@ -2,7 +2,7 @@ from llama_index.storage.docstore.mongodb import MongoDocumentStore
 from ingestion_modules.custom_docstore.base_method_docstore import BaseMethodVectorStore
 from typing import Literal,Optional
 from config import db_params
-from system_component.system_logging import Logger
+from system_components.system_logging import Logger
 
 # Define config
 MONGO_DB_NAME = db_params.MONGO_DB_NAME

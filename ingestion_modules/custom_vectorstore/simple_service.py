@@ -9,7 +9,7 @@ from ingestion_modules.custom_vectorstore import BaseMethodVectorStore
 from config import params
 from typing import List,Union
 from llama_index.core.schema import BaseNode
-from system_component.system_logging import Logger
+from system_components.system_logging import Logger
 cached_folder = params.cache_folder
 
 # Local vector store

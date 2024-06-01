@@ -1,7 +1,7 @@
 from llama_index.vector_stores.upstash import UpstashVectorStore
 from ingestion_modules.custom_vectorstore.base_method_vectorstore import BaseMethodVectorStore
 from config import db_params
-from system_component.system_logging import Logger
+from system_components.system_logging import Logger
 
 # Upstash service
 UPSTASH_URL = db_params.UPSTASH_URL

@@ -1,7 +1,7 @@
 from ingestion_modules.custom_vectorstore.base_method_vectorstore import BaseMethodVectorStore
 from config import db_params
 from llama_index.vector_stores.elasticsearch import ElasticsearchStore
-from system_component.system_logging import Logger
+from system_components.system_logging import Logger
 
 # Elastic Search service
 ES_NAME = db_params.ES_NAME

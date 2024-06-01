@@ -7,7 +7,7 @@ from llama_index.core import Document,StorageContext,VectorStoreIndex
 from config import params
 from llama_index.core.schema import BaseNode
 from ingestion_modules.custom_vectorstore import BaseMethodVectorStore
-from system_component.system_logging import Logger
+from system_components.system_logging import Logger
 # Local vector store
 
 class ChromaMode(StrEnum):

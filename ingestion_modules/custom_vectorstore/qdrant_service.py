@@ -6,7 +6,7 @@ from llama_index.core.schema import BaseNode
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 from typing import Literal, List , Union
-from system_component.system_logging import Logger
+from system_components.system_logging import Logger
 from llama_index.core import Document
 import qdrant_client
 from llama_index.core import StorageContext,VectorStoreIndex
