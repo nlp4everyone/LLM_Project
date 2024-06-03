@@ -6,7 +6,7 @@ from ingestion_modules.custom_vectorstore import QdrantService
 from llama_index.core.tools import QueryEngineTool,ToolMetadata
 # Init embedding model
 from embedding_modules.llamaindex import ServiceEmbeddingModule
-# from ai_modules.agent_modules import tavily_tool,open_weather_tool
+from agent_modules.basic_tools import tavily_tool,open_weather_tool
 from llama_index.core import Settings
 from llama_index.core.callbacks import CallbackManager
 from callbacks_modules import TokenCounter,LangFuseTracer
@@ -38,11 +38,11 @@ query_tool = QueryEngineTool(
 
 # Run agent
 async def get_response(question : str):
-    agent = AgentRunner.from_llm(tools = [query_tool],llm = llm,verbose = True)
+    agent = AgentRunner.from_llm(tools = [query_tool,tavily_tool,open_weather_tool],llm = llm,verbose = True)
     res = await agent.achat(question)
     return res
 
 # Get answer
-asyncio.run(get_response("Who is Neymar?"))
+asyncio.run(get_response("What is the weather of Hanoi today??"))
 
 # TokenCounter.print_properties()
